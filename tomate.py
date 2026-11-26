@@ -46,6 +46,7 @@ CONFIG_FILE = CONFIG_DIR / "config.json"
 STATE_FILE = DATA_DIR / "state.json"
 AUTOSTART_FILE = Path(GLib.get_user_config_dir()) / "autostart" / "tomate.desktop"
 SOUND_DIR = Path("/usr/share/sounds/freedesktop/stereo")
+QUIZ_HISTORY_MAX = 2000  # quiz results kept for progress stats
 
 DEFAULTS = {
     "ui_language": "",  # empty = follow the system language
@@ -572,6 +573,10 @@ class MainWindow(Gtk.ApplicationWindow):
         settings.set_tooltip_text(t("win.settings"))
         settings.connect("clicked", lambda *_: app.open_settings())
         header.pack_end(settings)
+        progress = Gtk.Button.new_from_icon_name("accessories-dictionary-symbolic", Gtk.IconSize.BUTTON)
+        progress.set_tooltip_text(t("prog.title"))
+        progress.connect("clicked", lambda *_: app.open_progress())
+        header.pack_end(progress)
         self.set_titlebar(header)
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8, border_width=24, valign=Gtk.Align.CENTER)
@@ -701,6 +706,132 @@ class SettingsDialog(Gtk.Dialog):
         return out, self.autostart.get_active()
 
 
+# ---------------------------------------------------------------- language progress
+
+class ProgressDialog(Gtk.Dialog):
+    """Per-language progress: summary, lesson list (click = make it the next lesson), restart, switch language."""
+
+    def __init__(self, app):
+        super().__init__(title=t("prog.title"), modal=False)
+        self.app = app
+        self.set_default_size(480, 560)
+        self.set_icon_from_file(APP_ICON)
+        if app.window.get_visible():
+            self.set_transient_for(app.window)
+        self.add_button(t("prog.close"), Gtk.ResponseType.CLOSE)
+        self.connect("response", lambda *_: self.destroy())
+
+        box = self.get_content_area()
+        box.set_spacing(12)
+        box.set_border_width(18)
+
+        self.combo = Gtk.ComboBoxText()
+        for lang in sorted(app.content.languages.values(), key=lambda l: l["name"]):
+            self.combo.append(lang["code"], f"{lang['flag']} {lang['name']}")
+        if not self.combo.set_active_id(app.cfg["language"]):
+            self.combo.set_active(0)
+        self.combo.connect("changed", lambda *_: self.refresh())
+        box.pack_start(self.combo, False, False, 0)
+
+        self.summary = Gtk.Grid(column_spacing=14, row_spacing=6)
+        box.pack_start(self.summary, False, False, 0)
+
+        self.learning = Gtk.Box(spacing=8)
+        box.pack_start(self.learning, False, False, 0)
+
+        box.pack_start(_label(t("prog.hint"), "dim", wrap=True), False, False, 0)
+        self.listbox = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE)
+        self.listbox.connect("row-activated", self._on_row)
+        scroller = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        scroller.set_shadow_type(Gtk.ShadowType.IN)
+        scroller.add(self.listbox)
+        box.pack_start(scroller, True, True, 0)
+
+        restart = Gtk.Button(label=t("prog.restart"), halign=Gtk.Align.START)
+        restart.get_style_context().add_class("destructive-action")
+        restart.connect("clicked", lambda *_: self._restart())
+        box.pack_start(restart, False, False, 0)
+
+        self.refresh()
+        self.show_all()
+
+    def code(self):
+        return self.combo.get_active_id()
+
+    def refresh(self):
+        code = self.code()
+        if not code:
+            return
+        lang = self.app.content.languages[code]
+        st = self.app.lesson_stats(code)
+        n = len(st["lessons"])
+
+        for child in self.summary.get_children():
+            child.destroy()
+        current = st["lessons"][st["current"]]["title"] if n else "—"
+        rows = [
+            (t("prog.next"), t("prog.next_v", n=st["current"] + 1, total=n, title=current)),
+            (t("prog.completed"), t("prog.completed_v", done=len(st["passed"]), total=n)),
+            (t("prog.accuracy"), t("prog.accuracy_v", pct=round(100 * st["correct"] / st["answered"]),
+                                   correct=st["correct"], answered=st["answered"])
+             if st["answered"] else t("prog.no_quizzes")),
+            (t("prog.last"), st["last"] or t("prog.never")),
+        ]
+        for i, (key, value) in enumerate(rows):
+            k = Gtk.Label(xalign=0)
+            k.set_markup(f"<b>{GLib.markup_escape_text(key)}</b>")
+            self.summary.attach(k, 0, i, 1, 1)
+            self.summary.attach(_label(value, wrap=True), 1, i, 1, 1)
+
+        for child in self.learning.get_children():
+            child.destroy()
+        if code == self.app.cfg["language"]:
+            self.learning.pack_start(_label("✔  " + t("prog.learning"), "dim"), False, False, 0)
+        else:
+            btn = Gtk.Button(label=t("prog.learn_this", language=lang["name"]))
+            btn.get_style_context().add_class("suggested-action")
+            btn.connect("clicked", lambda *_: (self.app.set_learning_language(code), self.refresh()))
+            self.learning.pack_start(btn, False, False, 0)
+
+        for row in self.listbox.get_children():
+            row.destroy()
+        for i, lesson in enumerate(st["lessons"]):
+            best = st["best"].get(i)
+            mark = "✔" if i in st["passed"] else ("◐" if best else "○")
+            detail = t("prog.best", score=best[0], total=best[1]) if best else t("prog.not_tried")
+            row_box = Gtk.Box(spacing=10, border_width=8)
+            row_box.pack_start(_label(mark), False, False, 0)
+            title = Gtk.Label(xalign=0)
+            text = GLib.markup_escape_text(f"{i + 1}. {lesson['title']}")
+            title.set_markup(f"<b>{text}</b>" if i == st["current"] else text)
+            row_box.pack_start(title, True, True, 0)
+            if i == st["current"]:
+                row_box.pack_start(_label("▶ " + t("prog.next_tag")), False, False, 0)
+            row_box.pack_end(_label(detail, "dim"), False, False, 0)
+            row = Gtk.ListBoxRow()
+            row.lesson_index = i
+            row.add(row_box)
+            self.listbox.add(row)
+        self.summary.show_all()
+        self.learning.show_all()
+        self.listbox.show_all()
+
+    def _on_row(self, _listbox, row):
+        self.app.set_next_lesson(self.code(), row.lesson_index)
+        self.refresh()
+
+    def _restart(self):
+        lang = self.app.content.languages[self.code()]
+        dlg = Gtk.MessageDialog(transient_for=self, modal=True, message_type=Gtk.MessageType.QUESTION,
+                                buttons=Gtk.ButtonsType.NONE, text=t("prog.restart_q", language=lang["name"]))
+        dlg.format_secondary_text(t("prog.restart_body"))
+        dlg.add_buttons(t("set.cancel"), Gtk.ResponseType.CANCEL, t("prog.restart_yes"), Gtk.ResponseType.OK)
+        if dlg.run() == Gtk.ResponseType.OK:
+            self.app.restart_language(lang["code"])
+            self.refresh()
+        dlg.destroy()
+
+
 # ---------------------------------------------------------------- top bar
 
 class Tray:
@@ -712,10 +843,11 @@ class Tray:
         self.reset = tray.MenuItem(callback=app.reset)
         self.show_break = tray.MenuItem(callback=lambda: app.show_overlay(force=True))
         self.open = tray.MenuItem(callback=app.show_window)
+        self.progress = tray.MenuItem(callback=app.open_progress)
         self.settings = tray.MenuItem(callback=app.open_settings)
         self.quit = tray.MenuItem(callback=app.quit)
         items = [self.status, tray.separator(), self.toggle, self.skip, self.reset, self.show_break,
-                 tray.separator(), self.open, self.settings, tray.separator(), self.quit]
+                 tray.separator(), self.open, self.progress, self.settings, tray.separator(), self.quit]
         self.icon = tray.StatusIcon("tomate", "Tomate", str(ICON_DIR / "tomate-paused.svg"), items,
                                     on_activate=app.show_window, on_secondary=app.toggle)
         self.relabel()
@@ -729,6 +861,7 @@ class Tray:
         self.reset.set_label(t("tray.reset"))
         self.show_break.set_label(t("tray.show_break"))
         self.open.set_label(t("tray.open"))
+        self.progress.set_label(t("prog.title") + "…")
         self.settings.set_label(t("tray.settings"))
         self.quit.set_label(t("tray.quit"))
 
@@ -768,6 +901,7 @@ class TomateApp(Gtk.Application):
         super().__init__(application_id=APP_ID, flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
         self.window = None
         self.overlay = None
+        self.progress_dialog = None
         self.tray = None
         self.timer = None
         self._started = False
@@ -879,6 +1013,8 @@ class TomateApp(Gtk.Application):
     def _apply_ui_language(self):
         i18n.set_language(self.cfg["ui_language"])
         self.content = Content(i18n.current())
+        if self.progress_dialog:  # its contents are in the old language
+            self.progress_dialog.destroy()
         old, was_visible = self.window, self.window.get_visible()
         self.window = MainWindow(self)
         if was_visible:
@@ -997,8 +1133,53 @@ class TomateApp(Gtk.Application):
         self.state.setdefault("lang_progress", {})[lang["code"]] = idx + 1 if score >= total / 2 else idx
         self.state.setdefault("quiz_history", []).append(
             {"date": date.today().isoformat(), "lang": lang["code"], "lesson": idx, "score": score, "total": total})
-        self.state["quiz_history"] = self.state["quiz_history"][-200:]
+        self.state["quiz_history"] = self.state["quiz_history"][-QUIZ_HISTORY_MAX:]
         self._save_state()
+        if self.progress_dialog:
+            self.progress_dialog.refresh()
+
+    # -- language progress
+    def lesson_stats(self, code):
+        """Summary of a language's progress, derived from lang_progress and quiz_history."""
+        lang = self.content.languages.get(code)
+        lessons = lang["lessons"] if lang else []
+        best, correct, answered, last = {}, 0, 0, None
+        for h in self.state.get("quiz_history", []):
+            if h.get("lang") != code or not h.get("total"):
+                continue
+            i = h.get("lesson")
+            correct += h["score"]
+            answered += h["total"]
+            last = max(last or h["date"], h["date"])
+            if i is not None and i < len(lessons):
+                prev = best.get(i)
+                if prev is None or h["score"] / h["total"] > prev[0] / prev[1]:
+                    best[i] = (h["score"], h["total"])
+        passed = {i for i, (s, n) in best.items() if s >= n / 2}
+        current = self.state.get("lang_progress", {}).get(code, 0) % len(lessons) if lessons else 0
+        return {"lessons": lessons, "current": current, "best": best, "passed": passed,
+                "correct": correct, "answered": answered, "last": last}
+
+    def set_next_lesson(self, code, idx):
+        self.state.setdefault("lang_progress", {})[code] = idx
+        self._save_state()
+
+    def restart_language(self, code):
+        self.state.setdefault("lang_progress", {})[code] = 0
+        self.state["quiz_history"] = [h for h in self.state.get("quiz_history", []) if h.get("lang") != code]
+        self._save_state()
+
+    def set_learning_language(self, code):
+        self.cfg["language"] = code
+        save_json(CONFIG_FILE, {k: self.cfg[k] for k in DEFAULTS})
+
+    def open_progress(self):
+        if self.progress_dialog:
+            self.progress_dialog.present()
+            return
+        self.progress_dialog = ProgressDialog(self)
+        self.progress_dialog.connect("destroy", lambda *_: setattr(self, "progress_dialog", None))
+        self.progress_dialog.present()
 
     def today_count(self):
         return self.state.get("stats", {}).get(date.today().isoformat(), 0)
