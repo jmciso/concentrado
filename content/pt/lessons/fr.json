@@ -1,0 +1,55 @@
+{
+  "code": "fr",
+  "name": "Francês",
+  "flag": "🇫🇷",
+  "lessons": [
+    {
+      "title": "Cortesia",
+      "tip": "Em França, entrar numa loja sem dizer «Bonjour» é considerado mal-educado.",
+      "items": [
+        {"term": "Enchanté", "translation": "muito prazer", "example": "Enchanté, je m'appelle Marie."},
+        {"term": "Ça marche", "translation": "combinado, está bem", "example": "Demain à midi ? Ça marche !"},
+        {"term": "Je vous en prie", "translation": "de nada (formal)", "example": "Merci ! — Je vous en prie."},
+        {"term": "Désolé", "translation": "desculpa, lamento", "example": "Désolé pour le retard."},
+        {"term": "À tout à l'heure", "translation": "até já", "example": "Je reviens, à tout à l'heure !"},
+        {"term": "Volontiers", "translation": "com todo o gosto", "example": "Un café ? — Volontiers !"}
+      ]
+    },
+    {
+      "title": "No trabalho",
+      "tip": "Atenção: «délai» é o prazo, não um atraso. Atraso diz-se «retard».",
+      "items": [
+        {"term": "une réunion", "translation": "uma reunião", "example": "J'ai une réunion à dix heures."},
+        {"term": "un délai", "translation": "um prazo", "example": "Le délai est trop court."},
+        {"term": "le bureau", "translation": "o escritório", "example": "Je suis au bureau."},
+        {"term": "un collègue", "translation": "um colega", "example": "Mon collègue est en vacances."},
+        {"term": "un courriel", "translation": "um email", "example": "Je t'envoie un courriel."},
+        {"term": "un retard", "translation": "um atraso", "example": "Le projet a du retard."}
+      ]
+    },
+    {
+      "title": "Verbos do dia a dia",
+      "tip": "Muitos verbos franceses do quotidiano são pronominais: «se dépêcher», «se rendre compte»…",
+      "items": [
+        {"term": "se dépêcher", "translation": "despachar-se", "example": "Dépêche-toi, on va rater le train !"},
+        {"term": "se rendre compte", "translation": "aperceber-se", "example": "Je ne m'en suis pas rendu compte."},
+        {"term": "avoir besoin de", "translation": "precisar de", "example": "J'ai besoin d'une pause."},
+        {"term": "rater", "translation": "perder (um transporte), falhar", "example": "J'ai raté le bus."},
+        {"term": "emprunter", "translation": "pedir emprestado", "example": "Je peux emprunter ton stylo ?"},
+        {"term": "ranger", "translation": "arrumar", "example": "Range ta chambre !"}
+      ]
+    },
+    {
+      "title": "À mesa",
+      "tip": "Em França, «une carafe d'eau» é gratuita no restaurante. Pede sem medo.",
+      "items": [
+        {"term": "le petit-déjeuner", "translation": "o pequeno-almoço", "example": "Le petit-déjeuner est servi à huit heures."},
+        {"term": "l'addition", "translation": "a conta", "example": "L'addition, s'il vous plaît."},
+        {"term": "une boulangerie", "translation": "uma padaria", "example": "Je vais à la boulangerie."},
+        {"term": "une carafe d'eau", "translation": "um jarro de água", "example": "Une carafe d'eau, s'il vous plaît."},
+        {"term": "saignant", "translation": "mal passado", "example": "Le steak, saignant."},
+        {"term": "le plat", "translation": "o prato principal", "example": "Comme plat, je prends le poisson."}
+      ]
+    }
+  ]
+}

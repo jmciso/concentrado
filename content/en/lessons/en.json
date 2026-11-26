@@ -1,0 +1,67 @@
+{
+  "code": "en",
+  "name": "English",
+  "flag": "🇬🇧",
+  "lessons": [
+    {
+      "title": "Meetings",
+      "tip": "In business English, \"follow up\" and \"action item\" show up in almost every set of minutes.",
+      "items": [
+        {"term": "to follow up", "translation": "to check back on something later", "example": "I'll follow up with the client tomorrow."},
+        {"term": "agenda", "translation": "list of topics for a meeting", "example": "Let's stick to the agenda."},
+        {"term": "to reschedule", "translation": "to move to another time", "example": "Can we reschedule to Thursday?"},
+        {"term": "outcome", "translation": "the final result", "example": "What was the outcome of the meeting?"},
+        {"term": "to wrap up", "translation": "to finish, to conclude", "example": "Let's wrap up in five minutes."},
+        {"term": "action item", "translation": "a task assigned to someone", "example": "Each action item needs an owner."}
+      ]
+    },
+    {
+      "title": "Everyday phrasal verbs",
+      "tip": "A phrasal verb rarely means the sum of its parts. Learn each one like a new word.",
+      "items": [
+        {"term": "to figure out", "translation": "to understand, to solve", "example": "I can't figure out this bug."},
+        {"term": "to put off", "translation": "to postpone", "example": "Stop putting off the dentist."},
+        {"term": "to run out of", "translation": "to have none left", "example": "We ran out of coffee."},
+        {"term": "to look into", "translation": "to investigate", "example": "I'll look into it."},
+        {"term": "to come up with", "translation": "to think of (an idea)", "example": "She came up with a great plan."},
+        {"term": "to get along", "translation": "to have a good relationship", "example": "They get along really well."}
+      ]
+    },
+    {
+      "title": "Idioms",
+      "tip": "Idioms make your English sound natural, but go easy on them in formal writing.",
+      "items": [
+        {"term": "a piece of cake", "translation": "very easy", "example": "The exam was a piece of cake."},
+        {"term": "to break the ice", "translation": "to ease the initial awkwardness", "example": "A joke helps to break the ice."},
+        {"term": "on the same page", "translation": "in agreement", "example": "Let's make sure we're on the same page."},
+        {"term": "to call it a day", "translation": "to stop working for today", "example": "It's 7pm, let's call it a day."},
+        {"term": "the ball is in your court", "translation": "it's your decision now", "example": "I've sent the offer, the ball is in your court."},
+        {"term": "to cut corners", "translation": "to do something cheaply or carelessly", "example": "Don't cut corners on testing."}
+      ]
+    },
+    {
+      "title": "Commonly confused words",
+      "tip": "Even native speakers mix these up. Spell-checkers won't save you.",
+      "items": [
+        {"term": "affect", "translation": "(verb) to influence", "example": "The delay will affect the launch."},
+        {"term": "effect", "translation": "(noun) a result", "example": "The change had a big effect."},
+        {"term": "loose", "translation": "not tight", "example": "This screw is loose."},
+        {"term": "lose", "translation": "to misplace", "example": "Don't lose your keys."},
+        {"term": "compliment", "translation": "an expression of praise", "example": "Thanks for the compliment!"},
+        {"term": "complement", "translation": "something that completes", "example": "The wine is a nice complement to the meal."}
+      ]
+    },
+    {
+      "title": "Emails",
+      "tip": "In a work email, short sentences and direct verbs sound more confident than hedging.",
+      "items": [
+        {"term": "please find attached", "translation": "the file is attached", "example": "Please find attached the report."},
+        {"term": "as per", "translation": "according to", "example": "As per our call, here are the details."},
+        {"term": "to loop in", "translation": "to add someone to the conversation", "example": "Looping in Ana from finance."},
+        {"term": "heads-up", "translation": "an advance warning", "example": "Just a heads-up: the server goes down at 6."},
+        {"term": "at your earliest convenience", "translation": "as soon as you can", "example": "Please reply at your earliest convenience."},
+        {"term": "to touch base", "translation": "to briefly get in contact", "example": "Let's touch base next week."}
+      ]
+    }
+  ]
+}

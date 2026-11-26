@@ -1,0 +1,55 @@
+{
+  "code": "fr",
+  "name": "French",
+  "flag": "🇫🇷",
+  "lessons": [
+    {
+      "title": "Courtesy",
+      "tip": "In France, walking into a shop without saying \"Bonjour\" is considered rude.",
+      "items": [
+        {"term": "Enchanté", "translation": "nice to meet you", "example": "Enchanté, je m'appelle Marie."},
+        {"term": "Ça marche", "translation": "sounds good, deal", "example": "Demain à midi ? Ça marche !"},
+        {"term": "Je vous en prie", "translation": "you're welcome (formal)", "example": "Merci ! — Je vous en prie."},
+        {"term": "Désolé", "translation": "sorry", "example": "Désolé pour le retard."},
+        {"term": "À tout à l'heure", "translation": "see you later (today)", "example": "Je reviens, à tout à l'heure !"},
+        {"term": "Volontiers", "translation": "gladly, with pleasure", "example": "Un café ? — Volontiers !"}
+      ]
+    },
+    {
+      "title": "At work",
+      "tip": "Careful: \"un délai\" is a deadline, not a delay. A delay is \"un retard\".",
+      "items": [
+        {"term": "une réunion", "translation": "a meeting", "example": "J'ai une réunion à dix heures."},
+        {"term": "un délai", "translation": "a deadline", "example": "Le délai est trop court."},
+        {"term": "le bureau", "translation": "the office, the desk", "example": "Je suis au bureau."},
+        {"term": "un collègue", "translation": "a colleague", "example": "Mon collègue est en vacances."},
+        {"term": "un courriel", "translation": "an email", "example": "Je t'envoie un courriel."},
+        {"term": "un retard", "translation": "a delay", "example": "Le projet a du retard."}
+      ]
+    },
+    {
+      "title": "Everyday verbs",
+      "tip": "Many everyday French verbs are reflexive: \"se dépêcher\", \"se rendre compte\"…",
+      "items": [
+        {"term": "se dépêcher", "translation": "to hurry up", "example": "Dépêche-toi, on va rater le train !"},
+        {"term": "se rendre compte", "translation": "to realise", "example": "Je ne m'en suis pas rendu compte."},
+        {"term": "avoir besoin de", "translation": "to need", "example": "J'ai besoin d'une pause."},
+        {"term": "rater", "translation": "to miss (a train), to fail", "example": "J'ai raté le bus."},
+        {"term": "emprunter", "translation": "to borrow", "example": "Je peux emprunter ton stylo ?"},
+        {"term": "ranger", "translation": "to tidy up", "example": "Range ta chambre !"}
+      ]
+    },
+    {
+      "title": "At the table",
+      "tip": "In French restaurants, \"une carafe d'eau\" (tap water) is free. Ask away.",
+      "items": [
+        {"term": "le petit-déjeuner", "translation": "breakfast", "example": "Le petit-déjeuner est servi à huit heures."},
+        {"term": "l'addition", "translation": "the bill", "example": "L'addition, s'il vous plaît."},
+        {"term": "une boulangerie", "translation": "a bakery", "example": "Je vais à la boulangerie."},
+        {"term": "une carafe d'eau", "translation": "a jug of tap water", "example": "Une carafe d'eau, s'il vous plaît."},
+        {"term": "saignant", "translation": "rare (meat)", "example": "Le steak, saignant."},
+        {"term": "le plat", "translation": "the main course", "example": "Comme plat, je prends le poisson."}
+      ]
+    }
+  ]
+}

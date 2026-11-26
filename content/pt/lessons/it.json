@@ -1,0 +1,55 @@
+{
+  "code": "it",
+  "name": "Italiano",
+  "flag": "🇮🇹",
+  "lessons": [
+    {
+      "title": "Primeiras palavras",
+      "tip": "«Prego» é o canivete suíço do italiano: de nada, faça favor, entre…",
+      "items": [
+        {"term": "Buongiorno", "translation": "bom dia", "example": "Buongiorno, signora!"},
+        {"term": "Grazie mille", "translation": "muito obrigado", "example": "Grazie mille per il regalo."},
+        {"term": "Prego", "translation": "de nada, faça favor", "example": "Grazie! — Prego."},
+        {"term": "Scusi", "translation": "desculpe (formal)", "example": "Scusi, dov'è la stazione?"},
+        {"term": "Arrivederci", "translation": "adeus", "example": "Arrivederci e a presto!"},
+        {"term": "Piacere", "translation": "muito prazer", "example": "Piacere, sono Marco."}
+      ]
+    },
+    {
+      "title": "No café",
+      "tip": "Em Itália, «un caffè» é sempre um expresso, e beber ao balcão é mais barato.",
+      "items": [
+        {"term": "un caffè", "translation": "um café (expresso)", "example": "Un caffè, per favore."},
+        {"term": "un cornetto", "translation": "um croissant", "example": "Prendo un cornetto alla crema."},
+        {"term": "il conto", "translation": "a conta", "example": "Il conto, per favore."},
+        {"term": "lo scontrino", "translation": "o talão", "example": "Prima si fa lo scontrino alla cassa."},
+        {"term": "al banco", "translation": "ao balcão", "example": "Lo bevo al banco."},
+        {"term": "un bicchiere d'acqua", "translation": "um copo de água", "example": "Mi dà un bicchiere d'acqua?"}
+      ]
+    },
+    {
+      "title": "Falsos amigos",
+      "tip": "Pedir «burro» numa pastelaria italiana dá manteiga, não um animal.",
+      "items": [
+        {"term": "il burro", "translation": "a manteiga", "example": "Pane e burro."},
+        {"term": "salire", "translation": "subir", "example": "Saliamo le scale."},
+        {"term": "guardare", "translation": "olhar, ver", "example": "Guardiamo un film?"},
+        {"term": "caldo", "translation": "quente", "example": "Oggi fa molto caldo."},
+        {"term": "l'aceto", "translation": "o vinagre", "example": "Olio e aceto per l'insalata."},
+        {"term": "squisito", "translation": "delicioso", "example": "Il tiramisù è squisito."}
+      ]
+    },
+    {
+      "title": "Expressões",
+      "tip": "A resposta a «In bocca al lupo!» é «Crepi!» (que o lobo morra!).",
+      "items": [
+        {"term": "In bocca al lupo!", "translation": "boa sorte!", "example": "Hai l'esame? In bocca al lupo!"},
+        {"term": "Magari!", "translation": "quem me dera!", "example": "Vai in vacanza? — Magari!"},
+        {"term": "Che figata!", "translation": "que fixe!", "example": "Un concerto gratis? Che figata!"},
+        {"term": "Boh", "translation": "sei lá", "example": "Dov'è Luca? — Boh."},
+        {"term": "Dai!", "translation": "vá lá!", "example": "Dai, andiamo!"},
+        {"term": "Meno male", "translation": "ainda bem", "example": "Sei arrivato, meno male!"}
+      ]
+    }
+  ]
+}

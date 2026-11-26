@@ -1,0 +1,167 @@
+[
+  {
+    "title": "Pescoço e ombros",
+    "kind": "Alongamento",
+    "intro": "Desfaz a tensão que se acumula quando olhas para o ecrã.",
+    "steps": [
+      {"text": "Roda os ombros para trás, devagar e em círculos grandes", "seconds": 30},
+      {"text": "Agora roda-os para a frente", "seconds": 30},
+      {"text": "Inclina a cabeça para a direita, orelha em direção ao ombro", "seconds": 20},
+      {"text": "Inclina a cabeça para a esquerda", "seconds": 20},
+      {"text": "Queixo ao peito, deixa o peso da cabeça alongar a nuca", "seconds": 20},
+      {"text": "Encolhe os ombros até às orelhas, segura 3s e larga. Repete", "seconds": 30}
+    ]
+  },
+  {
+    "title": "Pulsos e mãos",
+    "kind": "Alongamento",
+    "intro": "Teclado e rato castigam os antebraços. Dá-lhes 2 minutos.",
+    "steps": [
+      {"text": "Braço direito esticado, palma para fora, puxa os dedos para trás com a outra mão", "seconds": 20},
+      {"text": "Mesmo com o braço esquerdo", "seconds": 20},
+      {"text": "Agora palma para baixo, puxa os dedos em direção a ti (braço direito)", "seconds": 20},
+      {"text": "E o braço esquerdo", "seconds": 20},
+      {"text": "Abre e fecha as mãos com força, bem depressa", "seconds": 20},
+      {"text": "Roda os pulsos nos dois sentidos", "seconds": 20}
+    ]
+  },
+  {
+    "title": "Coluna em movimento",
+    "kind": "Mobilidade",
+    "intro": "Levanta-te. A coluna gosta de se mexer em todas as direções.",
+    "steps": [
+      {"text": "De pé, mãos nos joelhos: arredonda as costas (gato) e depois arqueia (vaca), alternando", "seconds": 40},
+      {"text": "Braços para cima, inclina o tronco para a direita", "seconds": 20},
+      {"text": "E para a esquerda", "seconds": 20},
+      {"text": "Pés fixos, roda o tronco para os lados, braços soltos", "seconds": 30},
+      {"text": "Rola a coluna para baixo, vértebra a vértebra, e sobe devagar", "seconds": 30}
+    ]
+  },
+  {
+    "title": "Agachamentos",
+    "kind": "Exercício",
+    "intro": "Põe as pernas a trabalhar e o sangue a circular.",
+    "steps": [
+      {"text": "15 agachamentos lentos: anca para trás, peito aberto", "seconds": 45},
+      {"text": "Descansa e sacode as pernas", "seconds": 15},
+      {"text": "Segura o agachamento a meio, como se estivesses sentado numa cadeira invisível", "seconds": 30},
+      {"text": "Descansa", "seconds": 15},
+      {"text": "Mais 10 agachamentos, a subir mais depressa", "seconds": 35}
+    ]
+  },
+  {
+    "title": "Volta à casa",
+    "kind": "Movimento",
+    "intro": "Sai da secretária. A sério.",
+    "steps": [
+      {"text": "Vai buscar um copo de água e bebe-o todo", "seconds": 60},
+      {"text": "Caminha (escadas, corredor, varanda) sem olhar para o telemóvel", "seconds": 90},
+      {"text": "Antes de te sentares, espreguiça-te bem com os braços para cima", "seconds": 15}
+    ]
+  },
+  {
+    "title": "Regra 20-20-20 para os olhos",
+    "kind": "Descanso visual",
+    "intro": "Os olhos também precisam de pausa. Afasta-te do ecrã.",
+    "steps": [
+      {"text": "Olha para algo a mais de 6 metros, idealmente pela janela", "seconds": 30},
+      {"text": "Pisca os olhos devagar e de propósito, 20 vezes", "seconds": 20},
+      {"text": "Fecha os olhos e cobre-os com as palmas mornas", "seconds": 30},
+      {"text": "Olhos fechados: olha para cima, para baixo, para a esquerda e para a direita", "seconds": 30},
+      {"text": "Desenha um 8 deitado com o olhar, devagar", "seconds": 20}
+    ]
+  },
+  {
+    "title": "Abrir o peito",
+    "kind": "Alongamento",
+    "intro": "Contraria a postura curvada de quem passa o dia ao computador.",
+    "steps": [
+      {"text": "Entrelaça as mãos atrás das costas, estica os braços e abre o peito", "seconds": 30},
+      {"text": "Antebraço apoiado na ombreira de uma porta, roda o corpo para o lado oposto (direita)", "seconds": 30},
+      {"text": "Mesmo do lado esquerdo", "seconds": 30},
+      {"text": "Mãos atrás da cabeça, cotovelos para trás, olha ligeiramente para cima", "seconds": 30}
+    ]
+  },
+  {
+    "title": "Gémeos e tornozelos",
+    "kind": "Exercício",
+    "intro": "Ajuda a circulação das pernas, que passam horas paradas.",
+    "steps": [
+      {"text": "20 elevações em pontas de pés, devagar", "seconds": 40},
+      {"text": "Equilíbrio só no pé direito", "seconds": 20},
+      {"text": "Equilíbrio só no pé esquerdo", "seconds": 20},
+      {"text": "Roda os tornozelos nos dois sentidos", "seconds": 20},
+      {"text": "Mais 15 elevações, segurando 2s lá em cima", "seconds": 40}
+    ]
+  },
+  {
+    "title": "Mini cardio",
+    "kind": "Exercício",
+    "intro": "2 minutos para acordar o corpo. Ajusta a intensidade ao espaço que tens.",
+    "steps": [
+      {"text": "Polichinelos (ou passos laterais, se houver vizinhos por baixo)", "seconds": 30},
+      {"text": "Descansa", "seconds": 10},
+      {"text": "Joelhos ao peito, alternados, ritmo rápido", "seconds": 30},
+      {"text": "Descansa", "seconds": 10},
+      {"text": "Corrida no lugar", "seconds": 30},
+      {"text": "Respira fundo e abranda", "seconds": 20}
+    ]
+  },
+  {
+    "title": "Flexões na secretária",
+    "kind": "Exercício",
+    "intro": "Mãos na beira da secretária (tem de estar estável!), corpo direito.",
+    "steps": [
+      {"text": "10 a 15 flexões inclinadas", "seconds": 40},
+      {"text": "Descansa e sacode os braços", "seconds": 20},
+      {"text": "Prancha inclinada com as mãos na secretária", "seconds": 30},
+      {"text": "Descansa", "seconds": 15},
+      {"text": "Mais 10 flexões, a descer devagar", "seconds": 40}
+    ]
+  },
+  {
+    "title": "Respiração em caixa",
+    "kind": "Respiração",
+    "intro": "Reduz o stress e limpa a cabeça. Senta-te direito ou fica de pé, longe do ecrã.",
+    "steps": [
+      {"text": "Inspira 4s, segura 4s, expira 4s, segura 4s", "seconds": 64},
+      {"text": "Continua o ciclo, de olhos fechados", "seconds": 64},
+      {"text": "Respira normalmente e repara em como te sentes", "seconds": 20}
+    ]
+  },
+  {
+    "title": "Flexores da anca",
+    "kind": "Alongamento",
+    "intro": "Estar sentado encurta os músculos da frente da anca.",
+    "steps": [
+      {"text": "Afundo com o pé direito à frente, empurra a anca para a frente", "seconds": 30},
+      {"text": "Troca: pé esquerdo à frente", "seconds": 30},
+      {"text": "De pé, agarra o pé direito atrás (quadríceps), apoia-te se precisares", "seconds": 25},
+      {"text": "Pé esquerdo", "seconds": 25},
+      {"text": "Pernas afastadas, desce devagar em direção ao chão", "seconds": 30}
+    ]
+  },
+  {
+    "title": "Anjos na parede",
+    "kind": "Postura",
+    "intro": "Costas e cabeça encostadas a uma parede, pés a um palmo dela.",
+    "steps": [
+      {"text": "Braços em W encostados à parede, desliza-os para cima até ao Y e volta. Devagar", "seconds": 45},
+      {"text": "Descansa", "seconds": 10},
+      {"text": "Queixo para trás (dupla papada), segura 5s e repete", "seconds": 30},
+      {"text": "Mais uma série de anjos, mantendo a lombar encostada", "seconds": 45}
+    ]
+  },
+  {
+    "title": "Prancha e core",
+    "kind": "Exercício",
+    "intro": "Precisas de um bocadinho de chão.",
+    "steps": [
+      {"text": "Prancha nos antebraços (ou com os joelhos no chão)", "seconds": 30},
+      {"text": "Descansa", "seconds": 15},
+      {"text": "Prancha lateral, lado direito", "seconds": 20},
+      {"text": "Prancha lateral, lado esquerdo", "seconds": 20},
+      {"text": "Deitado de costas, abraça os joelhos e balança suavemente", "seconds": 30}
+    ]
+  }
+]

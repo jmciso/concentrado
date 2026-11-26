@@ -1,0 +1,167 @@
+[
+  {
+    "title": "Neck and shoulders",
+    "kind": "Stretch",
+    "intro": "Release the tension that builds up while you stare at the screen.",
+    "steps": [
+      {"text": "Roll your shoulders backwards, slowly, in big circles", "seconds": 30},
+      {"text": "Now roll them forwards", "seconds": 30},
+      {"text": "Tilt your head to the right, ear towards your shoulder", "seconds": 20},
+      {"text": "Tilt your head to the left", "seconds": 20},
+      {"text": "Chin to chest, let the weight of your head stretch your neck", "seconds": 20},
+      {"text": "Shrug your shoulders up to your ears, hold 3s and drop. Repeat", "seconds": 30}
+    ]
+  },
+  {
+    "title": "Wrists and hands",
+    "kind": "Stretch",
+    "intro": "Keyboard and mouse punish your forearms. Give them 2 minutes.",
+    "steps": [
+      {"text": "Right arm straight, palm out, gently pull your fingers back with the other hand", "seconds": 20},
+      {"text": "Same with the left arm", "seconds": 20},
+      {"text": "Palm down now, pull your fingers towards you (right arm)", "seconds": 20},
+      {"text": "And the left arm", "seconds": 20},
+      {"text": "Open and close your hands hard and fast", "seconds": 20},
+      {"text": "Rotate your wrists in both directions", "seconds": 20}
+    ]
+  },
+  {
+    "title": "Moving spine",
+    "kind": "Mobility",
+    "intro": "Stand up. Your spine loves moving in every direction.",
+    "steps": [
+      {"text": "Standing, hands on knees: round your back (cat), then arch it (cow), alternating", "seconds": 40},
+      {"text": "Arms up, lean your torso to the right", "seconds": 20},
+      {"text": "And to the left", "seconds": 20},
+      {"text": "Feet planted, twist your torso side to side, arms loose", "seconds": 30},
+      {"text": "Roll down one vertebra at a time, then roll back up slowly", "seconds": 30}
+    ]
+  },
+  {
+    "title": "Squats",
+    "kind": "Exercise",
+    "intro": "Get your legs working and your blood flowing.",
+    "steps": [
+      {"text": "15 slow squats: hips back, chest open", "seconds": 45},
+      {"text": "Rest and shake out your legs", "seconds": 15},
+      {"text": "Hold a half squat, as if sitting on an invisible chair", "seconds": 30},
+      {"text": "Rest", "seconds": 15},
+      {"text": "10 more squats, driving up faster", "seconds": 35}
+    ]
+  },
+  {
+    "title": "Walk around",
+    "kind": "Movement",
+    "intro": "Leave your desk. Really.",
+    "steps": [
+      {"text": "Get a glass of water and drink all of it", "seconds": 60},
+      {"text": "Walk around (stairs, hallway, balcony) without looking at your phone", "seconds": 90},
+      {"text": "Before sitting down, have a big stretch with your arms overhead", "seconds": 15}
+    ]
+  },
+  {
+    "title": "20-20-20 for your eyes",
+    "kind": "Eye rest",
+    "intro": "Your eyes need a break too. Step away from the screen.",
+    "steps": [
+      {"text": "Look at something more than 6 metres away, ideally out of a window", "seconds": 30},
+      {"text": "Blink slowly and deliberately, 20 times", "seconds": 20},
+      {"text": "Close your eyes and cover them with warm palms", "seconds": 30},
+      {"text": "Eyes closed: look up, down, left and right", "seconds": 30},
+      {"text": "Trace a sideways 8 with your eyes, slowly", "seconds": 20}
+    ]
+  },
+  {
+    "title": "Open your chest",
+    "kind": "Stretch",
+    "intro": "Counteract the hunched posture of a day at the computer.",
+    "steps": [
+      {"text": "Interlace your hands behind your back, straighten your arms and open your chest", "seconds": 30},
+      {"text": "Forearm against a door frame, turn your body away from it (right side)", "seconds": 30},
+      {"text": "Same on the left side", "seconds": 30},
+      {"text": "Hands behind your head, elbows back, look slightly up", "seconds": 30}
+    ]
+  },
+  {
+    "title": "Calves and ankles",
+    "kind": "Exercise",
+    "intro": "Helps circulation in legs that sit still for hours.",
+    "steps": [
+      {"text": "20 slow calf raises", "seconds": 40},
+      {"text": "Balance on your right foot only", "seconds": 20},
+      {"text": "Balance on your left foot only", "seconds": 20},
+      {"text": "Rotate your ankles in both directions", "seconds": 20},
+      {"text": "15 more calf raises, holding 2s at the top", "seconds": 40}
+    ]
+  },
+  {
+    "title": "Mini cardio",
+    "kind": "Exercise",
+    "intro": "2 minutes to wake your body up. Adjust the intensity to your space.",
+    "steps": [
+      {"text": "Jumping jacks (or side steps if you have neighbours below)", "seconds": 30},
+      {"text": "Rest", "seconds": 10},
+      {"text": "High knees, alternating, fast pace", "seconds": 30},
+      {"text": "Rest", "seconds": 10},
+      {"text": "Run on the spot", "seconds": 30},
+      {"text": "Breathe deeply and slow down", "seconds": 20}
+    ]
+  },
+  {
+    "title": "Desk push-ups",
+    "kind": "Exercise",
+    "intro": "Hands on the edge of your desk (make sure it's stable!), body straight.",
+    "steps": [
+      {"text": "10 to 15 incline push-ups", "seconds": 40},
+      {"text": "Rest and shake out your arms", "seconds": 20},
+      {"text": "Incline plank with your hands on the desk", "seconds": 30},
+      {"text": "Rest", "seconds": 15},
+      {"text": "10 more push-ups, lowering slowly", "seconds": 40}
+    ]
+  },
+  {
+    "title": "Box breathing",
+    "kind": "Breathing",
+    "intro": "Lowers stress and clears your head. Sit up straight or stand, away from the screen.",
+    "steps": [
+      {"text": "Breathe in 4s, hold 4s, breathe out 4s, hold 4s", "seconds": 64},
+      {"text": "Keep the cycle going, eyes closed", "seconds": 64},
+      {"text": "Breathe normally and notice how you feel", "seconds": 20}
+    ]
+  },
+  {
+    "title": "Hip flexors",
+    "kind": "Stretch",
+    "intro": "Sitting shortens the muscles at the front of your hips.",
+    "steps": [
+      {"text": "Lunge with your right foot forward, push your hips forward", "seconds": 30},
+      {"text": "Switch: left foot forward", "seconds": 30},
+      {"text": "Standing, grab your right foot behind you (quads), hold on to something if needed", "seconds": 25},
+      {"text": "Left foot", "seconds": 25},
+      {"text": "Feet wide apart, slowly reach towards the floor", "seconds": 30}
+    ]
+  },
+  {
+    "title": "Wall angels",
+    "kind": "Posture",
+    "intro": "Back and head against a wall, feet a hand's width away from it.",
+    "steps": [
+      {"text": "Arms in a W against the wall, slide them up into a Y and back. Slowly", "seconds": 45},
+      {"text": "Rest", "seconds": 10},
+      {"text": "Chin tucks (double chin), hold 5s and repeat", "seconds": 30},
+      {"text": "One more set of angels, keeping your lower back against the wall", "seconds": 45}
+    ]
+  },
+  {
+    "title": "Plank and core",
+    "kind": "Exercise",
+    "intro": "You'll need a bit of floor.",
+    "steps": [
+      {"text": "Forearm plank (or with knees down)", "seconds": 30},
+      {"text": "Rest", "seconds": 15},
+      {"text": "Side plank, right side", "seconds": 20},
+      {"text": "Side plank, left side", "seconds": 20},
+      {"text": "Lying on your back, hug your knees and rock gently", "seconds": 30}
+    ]
+  }
+]

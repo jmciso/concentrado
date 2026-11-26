@@ -1,0 +1,67 @@
+{
+  "code": "en",
+  "name": "Inglês",
+  "flag": "🇬🇧",
+  "lessons": [
+    {
+      "title": "Reuniões",
+      "tip": "Em inglês de trabalho, «to follow up» e «action item» aparecem em quase todas as atas.",
+      "items": [
+        {"term": "to follow up", "translation": "dar seguimento", "example": "I'll follow up with the client tomorrow."},
+        {"term": "agenda", "translation": "ordem de trabalhos", "example": "Let's stick to the agenda."},
+        {"term": "to reschedule", "translation": "reagendar", "example": "Can we reschedule to Thursday?"},
+        {"term": "outcome", "translation": "resultado", "example": "What was the outcome of the meeting?"},
+        {"term": "to wrap up", "translation": "concluir, terminar", "example": "Let's wrap up in five minutes."},
+        {"term": "action item", "translation": "tarefa atribuída", "example": "Each action item needs an owner."}
+      ]
+    },
+    {
+      "title": "Phrasal verbs do dia a dia",
+      "tip": "O sentido de um phrasal verb raramente é a soma das partes. Decora-o como uma palavra nova.",
+      "items": [
+        {"term": "to figure out", "translation": "perceber, descobrir", "example": "I can't figure out this bug."},
+        {"term": "to put off", "translation": "adiar", "example": "Stop putting off the dentist."},
+        {"term": "to run out of", "translation": "ficar sem", "example": "We ran out of coffee."},
+        {"term": "to look into", "translation": "investigar, analisar", "example": "I'll look into it."},
+        {"term": "to come up with", "translation": "ter (uma ideia), inventar", "example": "She came up with a great plan."},
+        {"term": "to get along", "translation": "dar-se bem", "example": "They get along really well."}
+      ]
+    },
+    {
+      "title": "Expressões idiomáticas",
+      "tip": "Expressões como estas tornam o teu inglês mais natural, mas usa-as com moderação em contexto formal.",
+      "items": [
+        {"term": "a piece of cake", "translation": "canja, muito fácil", "example": "The exam was a piece of cake."},
+        {"term": "to break the ice", "translation": "quebrar o gelo", "example": "A joke helps to break the ice."},
+        {"term": "on the same page", "translation": "em sintonia", "example": "Let's make sure we're on the same page."},
+        {"term": "to call it a day", "translation": "dar o dia por terminado", "example": "It's 7pm, let's call it a day."},
+        {"term": "the ball is in your court", "translation": "a decisão é tua", "example": "I've sent the offer, the ball is in your court."},
+        {"term": "to cut corners", "translation": "fazer as coisas à pressa (e mal)", "example": "Don't cut corners on testing."}
+      ]
+    },
+    {
+      "title": "Falsos amigos",
+      "tip": "Estas palavras parecem portuguesas mas significam outra coisa. São das gafes mais comuns.",
+      "items": [
+        {"term": "actually", "translation": "na verdade", "example": "Actually, I disagree."},
+        {"term": "eventually", "translation": "por fim, acabar por", "example": "Eventually, he found a job."},
+        {"term": "to pretend", "translation": "fingir", "example": "He pretended to be asleep."},
+        {"term": "to push", "translation": "empurrar", "example": "Push the door, don't pull it."},
+        {"term": "library", "translation": "biblioteca", "example": "I borrowed it from the library."},
+        {"term": "sensible", "translation": "sensato", "example": "That's a sensible decision."}
+      ]
+    },
+    {
+      "title": "Emails",
+      "tip": "Num email profissional, frases curtas e verbos diretos soam mais seguros do que rodeios.",
+      "items": [
+        {"term": "please find attached", "translation": "segue em anexo", "example": "Please find attached the report."},
+        {"term": "as per", "translation": "conforme, de acordo com", "example": "As per our call, here are the details."},
+        {"term": "to loop in", "translation": "incluir (alguém na conversa)", "example": "Looping in Ana from finance."},
+        {"term": "heads-up", "translation": "aviso prévio", "example": "Just a heads-up: the server goes down at 6."},
+        {"term": "at your earliest convenience", "translation": "assim que possível", "example": "Please reply at your earliest convenience."},
+        {"term": "to touch base", "translation": "falar brevemente, pôr-se a par", "example": "Let's touch base next week."}
+      ]
+    }
+  ]
+}

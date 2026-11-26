@@ -1,0 +1,55 @@
+{
+  "code": "es",
+  "name": "Spanish",
+  "flag": "🇪🇸",
+  "lessons": [
+    {
+      "title": "False friends",
+      "tip": "These look familiar but mean something else. Classic traps for beginners.",
+      "items": [
+        {"term": "embarazada", "translation": "pregnant", "example": "Mi hermana está embarazada."},
+        {"term": "exquisito", "translation": "delicious", "example": "La paella está exquisita."},
+        {"term": "el polvo", "translation": "dust", "example": "Hay mucho polvo en la estantería."},
+        {"term": "un rato", "translation": "a little while", "example": "Espera un rato, por favor."},
+        {"term": "la oficina", "translation": "the office", "example": "Llego a la oficina a las nueve."},
+        {"term": "borrar", "translation": "to delete, to erase", "example": "Borra ese archivo."}
+      ]
+    },
+    {
+      "title": "At the restaurant",
+      "tip": "In Spain you get the waiter's attention with a simple \"¡Perdona!\".",
+      "items": [
+        {"term": "la cuenta", "translation": "the bill", "example": "¿Nos trae la cuenta, por favor?"},
+        {"term": "los cubiertos", "translation": "the cutlery", "example": "Faltan los cubiertos."},
+        {"term": "la propina", "translation": "the tip", "example": "Dejamos una propina."},
+        {"term": "el plato del día", "translation": "the dish of the day", "example": "¿Cuál es el plato del día?"},
+        {"term": "el camarero", "translation": "the waiter", "example": "El camarero es muy amable."},
+        {"term": "la cuchara", "translation": "the spoon", "example": "Necesito una cuchara para la sopa."}
+      ]
+    },
+    {
+      "title": "Useful verbs",
+      "tip": "\"Quedar\" is one of the most used verbs in Spain: it's how you make plans.",
+      "items": [
+        {"term": "quedar", "translation": "to arrange to meet", "example": "¿Quedamos a las ocho?"},
+        {"term": "echar de menos", "translation": "to miss (someone)", "example": "Te echo de menos."},
+        {"term": "tardar", "translation": "to take (time)", "example": "El tren tarda dos horas."},
+        {"term": "acordarse", "translation": "to remember", "example": "No me acuerdo de su nombre."},
+        {"term": "aprovechar", "translation": "to make the most of", "example": "Aprovecha el buen tiempo."},
+        {"term": "despertarse", "translation": "to wake up", "example": "Me despierto a las siete."}
+      ]
+    },
+    {
+      "title": "Colloquial expressions",
+      "tip": "You'll hear these all the time in Spanish TV shows. Great ear training.",
+      "items": [
+        {"term": "¡Qué guay!", "translation": "How cool!", "example": "¿Vienes a la playa? ¡Qué guay!"},
+        {"term": "estar en las nubes", "translation": "to be daydreaming", "example": "Hoy estás en las nubes."},
+        {"term": "no pasa nada", "translation": "no worries", "example": "Llegas tarde, pero no pasa nada."},
+        {"term": "ponerse las pilas", "translation": "to get your act together", "example": "¡Ponte las pilas, que es tarde!"},
+        {"term": "tomar el pelo", "translation": "to pull someone's leg", "example": "¿Me estás tomando el pelo?"},
+        {"term": "ser pan comido", "translation": "to be a piece of cake", "example": "Este ejercicio es pan comido."}
+      ]
+    }
+  ]
+}

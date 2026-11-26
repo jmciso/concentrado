@@ -1,0 +1,55 @@
+{
+  "code": "it",
+  "name": "Italian",
+  "flag": "🇮🇹",
+  "lessons": [
+    {
+      "title": "First words",
+      "tip": "\"Prego\" is the Swiss army knife of Italian: you're welcome, go ahead, come in…",
+      "items": [
+        {"term": "Buongiorno", "translation": "good morning", "example": "Buongiorno, signora!"},
+        {"term": "Grazie mille", "translation": "thanks a lot", "example": "Grazie mille per il regalo."},
+        {"term": "Prego", "translation": "you're welcome, go ahead", "example": "Grazie! — Prego."},
+        {"term": "Scusi", "translation": "excuse me (formal)", "example": "Scusi, dov'è la stazione?"},
+        {"term": "Arrivederci", "translation": "goodbye", "example": "Arrivederci e a presto!"},
+        {"term": "Piacere", "translation": "nice to meet you", "example": "Piacere, sono Marco."}
+      ]
+    },
+    {
+      "title": "At the café",
+      "tip": "In Italy, \"un caffè\" is always an espresso, and drinking it at the counter is cheaper.",
+      "items": [
+        {"term": "un caffè", "translation": "an espresso", "example": "Un caffè, per favore."},
+        {"term": "un cornetto", "translation": "a croissant", "example": "Prendo un cornetto alla crema."},
+        {"term": "il conto", "translation": "the bill", "example": "Il conto, per favore."},
+        {"term": "lo scontrino", "translation": "the receipt", "example": "Prima si fa lo scontrino alla cassa."},
+        {"term": "al banco", "translation": "at the counter", "example": "Lo bevo al banco."},
+        {"term": "un bicchiere d'acqua", "translation": "a glass of water", "example": "Mi dà un bicchiere d'acqua?"}
+      ]
+    },
+    {
+      "title": "False friends",
+      "tip": "\"Caldo\" means hot, not cold. Mind the taps in Italian bathrooms!",
+      "items": [
+        {"term": "il burro", "translation": "butter", "example": "Pane e burro."},
+        {"term": "salire", "translation": "to go up", "example": "Saliamo le scale."},
+        {"term": "guardare", "translation": "to look, to watch", "example": "Guardiamo un film?"},
+        {"term": "caldo", "translation": "hot", "example": "Oggi fa molto caldo."},
+        {"term": "l'aceto", "translation": "vinegar", "example": "Olio e aceto per l'insalata."},
+        {"term": "squisito", "translation": "delicious", "example": "Il tiramisù è squisito."}
+      ]
+    },
+    {
+      "title": "Expressions",
+      "tip": "The reply to \"In bocca al lupo!\" is \"Crepi!\" (may the wolf die!).",
+      "items": [
+        {"term": "In bocca al lupo!", "translation": "good luck!", "example": "Hai l'esame? In bocca al lupo!"},
+        {"term": "Magari!", "translation": "I wish!", "example": "Vai in vacanza? — Magari!"},
+        {"term": "Che figata!", "translation": "how cool!", "example": "Un concerto gratis? Che figata!"},
+        {"term": "Boh", "translation": "dunno", "example": "Dov'è Luca? — Boh."},
+        {"term": "Dai!", "translation": "come on!", "example": "Dai, andiamo!"},
+        {"term": "Meno male", "translation": "thank goodness", "example": "Sei arrivato, meno male!"}
+      ]
+    }
+  ]
+}

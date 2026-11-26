@@ -1,0 +1,55 @@
+{
+  "code": "de",
+  "name": "Alemão",
+  "flag": "🇩🇪",
+  "lessons": [
+    {
+      "title": "Primeiras palavras",
+      "tip": "«Bitte» serve para quase tudo: por favor, de nada, faça favor, desculpe?",
+      "items": [
+        {"term": "Guten Morgen", "translation": "bom dia", "example": "Guten Morgen, wie geht's?"},
+        {"term": "Danke schön", "translation": "muito obrigado", "example": "Danke schön für die Hilfe!"},
+        {"term": "Entschuldigung", "translation": "desculpe", "example": "Entschuldigung, wo ist der Bahnhof?"},
+        {"term": "Wie geht's?", "translation": "como estás?", "example": "Hallo Anna, wie geht's?"},
+        {"term": "Tschüss", "translation": "adeus", "example": "Tschüss, bis morgen!"},
+        {"term": "Bitte", "translation": "por favor, de nada", "example": "Ein Wasser, bitte."}
+      ]
+    },
+    {
+      "title": "Tempo",
+      "tip": "Os substantivos em alemão escrevem-se sempre com maiúscula: die Woche, der Tag.",
+      "items": [
+        {"term": "heute", "translation": "hoje", "example": "Heute ist es kalt."},
+        {"term": "morgen", "translation": "amanhã", "example": "Wir sehen uns morgen."},
+        {"term": "gestern", "translation": "ontem", "example": "Gestern war ich müde."},
+        {"term": "die Woche", "translation": "a semana", "example": "Nächste Woche habe ich Urlaub."},
+        {"term": "spät", "translation": "tarde", "example": "Es ist schon spät."},
+        {"term": "früh", "translation": "cedo", "example": "Ich stehe früh auf."}
+      ]
+    },
+    {
+      "title": "No escritório",
+      "tip": "«Feierabend» é o momento em que acaba o dia de trabalho. Os alemães levam-no a sério.",
+      "items": [
+        {"term": "der Feierabend", "translation": "fim do dia de trabalho", "example": "Schönen Feierabend!"},
+        {"term": "die Besprechung", "translation": "a reunião", "example": "Die Besprechung fängt um zehn an."},
+        {"term": "der Rechner", "translation": "o computador", "example": "Mein Rechner ist langsam."},
+        {"term": "die Pause", "translation": "a pausa", "example": "Ich mache eine Pause."},
+        {"term": "erledigen", "translation": "tratar, despachar", "example": "Ich erledige das heute."},
+        {"term": "die Frist", "translation": "o prazo", "example": "Die Frist endet am Freitag."}
+      ]
+    },
+    {
+      "title": "Palavras compostas",
+      "tip": "O alemão cola palavras: Hand (mão) + Schuh (sapato) = Handschuh (luva). Tenta adivinhar!",
+      "items": [
+        {"term": "der Handschuh", "translation": "a luva", "example": "Ich habe meinen Handschuh verloren."},
+        {"term": "der Kühlschrank", "translation": "o frigorífico", "example": "Die Milch ist im Kühlschrank."},
+        {"term": "der Staubsauger", "translation": "o aspirador", "example": "Der Staubsauger ist laut."},
+        {"term": "der Fernseher", "translation": "a televisão", "example": "Mach den Fernseher aus."},
+        {"term": "das Krankenhaus", "translation": "o hospital", "example": "Sie arbeitet im Krankenhaus."},
+        {"term": "das Flugzeug", "translation": "o avião", "example": "Das Flugzeug landet um acht."}
+      ]
+    }
+  ]
+}

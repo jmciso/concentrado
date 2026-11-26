@@ -1,0 +1,55 @@
+{
+  "code": "de",
+  "name": "German",
+  "flag": "🇩🇪",
+  "lessons": [
+    {
+      "title": "First words",
+      "tip": "\"Bitte\" works for almost everything: please, you're welcome, here you go, pardon?",
+      "items": [
+        {"term": "Guten Morgen", "translation": "good morning", "example": "Guten Morgen, wie geht's?"},
+        {"term": "Danke schön", "translation": "thank you very much", "example": "Danke schön für die Hilfe!"},
+        {"term": "Entschuldigung", "translation": "excuse me, sorry", "example": "Entschuldigung, wo ist der Bahnhof?"},
+        {"term": "Wie geht's?", "translation": "how are you?", "example": "Hallo Anna, wie geht's?"},
+        {"term": "Tschüss", "translation": "bye", "example": "Tschüss, bis morgen!"},
+        {"term": "Bitte", "translation": "please, you're welcome", "example": "Ein Wasser, bitte."}
+      ]
+    },
+    {
+      "title": "Time",
+      "tip": "German nouns are always capitalised: die Woche, der Tag.",
+      "items": [
+        {"term": "heute", "translation": "today", "example": "Heute ist es kalt."},
+        {"term": "morgen", "translation": "tomorrow", "example": "Wir sehen uns morgen."},
+        {"term": "gestern", "translation": "yesterday", "example": "Gestern war ich müde."},
+        {"term": "die Woche", "translation": "the week", "example": "Nächste Woche habe ich Urlaub."},
+        {"term": "spät", "translation": "late", "example": "Es ist schon spät."},
+        {"term": "früh", "translation": "early", "example": "Ich stehe früh auf."}
+      ]
+    },
+    {
+      "title": "At the office",
+      "tip": "\"Feierabend\" is the moment the workday ends. Germans take it seriously.",
+      "items": [
+        {"term": "der Feierabend", "translation": "end of the working day", "example": "Schönen Feierabend!"},
+        {"term": "die Besprechung", "translation": "the meeting", "example": "Die Besprechung fängt um zehn an."},
+        {"term": "der Rechner", "translation": "the computer", "example": "Mein Rechner ist langsam."},
+        {"term": "die Pause", "translation": "the break", "example": "Ich mache eine Pause."},
+        {"term": "erledigen", "translation": "to get done, to take care of", "example": "Ich erledige das heute."},
+        {"term": "die Frist", "translation": "the deadline", "example": "Die Frist endet am Freitag."}
+      ]
+    },
+    {
+      "title": "Compound words",
+      "tip": "German glues words together: Hand + Schuh (shoe) = Handschuh (glove). Try to guess them!",
+      "items": [
+        {"term": "der Handschuh", "translation": "the glove", "example": "Ich habe meinen Handschuh verloren."},
+        {"term": "der Kühlschrank", "translation": "the fridge", "example": "Die Milch ist im Kühlschrank."},
+        {"term": "der Staubsauger", "translation": "the vacuum cleaner", "example": "Der Staubsauger ist laut."},
+        {"term": "der Fernseher", "translation": "the TV", "example": "Mach den Fernseher aus."},
+        {"term": "das Krankenhaus", "translation": "the hospital", "example": "Sie arbeitet im Krankenhaus."},
+        {"term": "das Flugzeug", "translation": "the aeroplane", "example": "Das Flugzeug landet um acht."}
+      ]
+    }
+  ]
+}
