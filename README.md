@@ -15,11 +15,51 @@ A Pomodoro timer for GNOME (Python + GTK3) with active breaks. UI in English or 
 
 ## Install
 
+### Requirements
+
+Linux with Python 3 and GTK 3. On Ubuntu/Debian desktops these are usually already there; if not:
+
 ```sh
+sudo apt install python3-gi gir1.2-gtk-3.0
+# optional: notifications and sounds
+sudo apt install gir1.2-notify-0.7 gir1.2-gstreamer-1.0 gstreamer1.0-plugins-base
+```
+
+For the top-bar icon on GNOME you need the AppIndicator extension. Ubuntu ships it enabled
+(`ubuntu-appindicators@ubuntu.com`); on other distros install "AppIndicator and KStatusNotifierItem Support".
+KDE and most other desktops support it natively. Without it the app still works: closing the window minimises it.
+
+### Steps
+
+```sh
+git clone https://github.com/jmciso/tomate.git ~/dev/tomate
+cd ~/dev/tomate
 ./install.sh
 ```
 
-Settings has an option to start with your session, and one to pick the app language.
+This needs no sudo. It installs, for the current user only:
+
+- `~/.local/bin/tomate` (symlink to `tomate.py`)
+- an app-grid entry: `~/.local/share/applications/app.tomate.Pomodoro.desktop`
+- icons in `~/.local/share/icons/hicolor/`
+
+The installed files point to the cloned folder, so keep it where it is. To update, `git pull`;
+re-run `./install.sh` only if the icons changed.
+
+Then open **Tomate** from the app grid, or run `tomate`. In Settings you can make it start with your
+session and pick the app language (English/Português, which follows the system by default).
+
+If the icon doesn't show in the app grid straight away, log out and back in (GNOME caches icons).
+
+### Uninstall
+
+```sh
+tomate --quit
+rm -f ~/.local/bin/tomate ~/.local/share/applications/app.tomate.Pomodoro.desktop \
+      ~/.config/autostart/tomate.desktop
+find ~/.local/share/icons/hicolor -name 'app.tomate.Pomodoro.*' -delete
+rm -rf ~/.config/tomate ~/.local/share/tomate   # settings and progress (optional)
+```
 
 ## Command line
 
