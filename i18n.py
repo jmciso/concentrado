@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 João Mendes
 """UI strings. To add a language: copy the "en" block, translate it, and add content/<code>/."""
 
 import locale

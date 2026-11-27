@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 João Mendes
 """Dependency-free top-bar icon: StatusNotifierItem + com.canonical.dbusmenu over Gio D-Bus.
 
 GNOME shows these through the AppIndicator extension (enabled by default on Ubuntu);

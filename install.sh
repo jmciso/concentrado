@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 João Mendes
 # Installs Tomate for the current user (no sudo needed).
 set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"

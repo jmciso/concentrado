@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 João Mendes
 """Generates the Tomate icons (app icon + tray state variants)."""
 import math
 from pathlib import Path
