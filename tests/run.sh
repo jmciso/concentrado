@@ -6,4 +6,5 @@ status=0
 echo "== desktop integration";  python3 -m unittest -q tests.test_desktop_integration || status=1
 echo; echo "== dependency check";  bash tests/test_depcheck.sh || status=1
 echo; echo "== AppDir end-to-end"; bash tests/test_appdir.sh || status=1
+echo; echo "== packed AppImage (skipped if not built)"; bash tests/test_appimage.sh || status=1
 exit $status

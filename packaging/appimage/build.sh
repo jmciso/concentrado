@@ -78,7 +78,9 @@ fi
 VERSION="$(cd "$ROOT" && git describe --tags --always --dirty)"
 TARGET="$OUT/Tomate-$VERSION-x86_64.AppImage"
 # Update info lets appimageupdatetool fetch new releases from GitHub (once the repo is public).
+# Run from $OUT: appimagetool writes the .zsync update file to the current directory.
+cd "$OUT"
 ARCH=x86_64 VERSION="$VERSION" APPIMAGE_EXTRACT_AND_RUN=1 "$TOOL" \
     -u "gh-releases-zsync|jmciso|tomate|latest|Tomate-*x86_64.AppImage.zsync" \
     "$APPDIR" "$TARGET"
-echo "Built: $TARGET"
+echo "Built: $TARGET (+ $(basename "$TARGET").zsync for updates)"
