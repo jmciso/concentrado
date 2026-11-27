@@ -89,4 +89,8 @@ cd "$OUT"
 ARCH=x86_64 VERSION="$VERSION" APPIMAGE_EXTRACT_AND_RUN=1 "$TOOL" \
     -u "gh-releases-zsync|$GH_PATH|latest|Concentrado-*x86_64.AppImage.zsync" \
     "$APPDIR" "$TARGET"
-echo "Built: $TARGET (+ $(basename "$TARGET").zsync for updates)"
+# A copy under a fixed name, so releases/latest/download/Concentrado-x86_64.AppImage always works,
+# and checksums for everything that gets published.
+cp "$TARGET" "$OUT/Concentrado-x86_64.AppImage"
+(cd "$OUT" && sha256sum "$(basename "$TARGET")" "$(basename "$TARGET").zsync" Concentrado-x86_64.AppImage > SHA256SUMS)
+echo "Built: $TARGET (+ .zsync for updates, Concentrado-x86_64.AppImage fixed-name copy, SHA256SUMS)"

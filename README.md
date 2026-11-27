@@ -15,7 +15,15 @@ A Pomodoro timer for GNOME (Python + GTK3) with active breaks. UI in English or 
   - a **mini language lesson** (English, Spanish, French, German, Italian) with a **quiz** at the end.
     The lesson only advances when you get at least half right.
 
-## Install
+## Download
+
+**[Download the latest AppImage](https://github.com/jmciso/concentrado/releases/latest/download/Concentrado-x86_64.AppImage)**
+(Ubuntu, Fedora and most distros). Make it executable (`chmod +x Concentrado-x86_64.AppImage`, or
+*Properties → Executable as Program*) and open it. On first run it offers to add itself to your app menu.
+All versions and checksums are on the [releases page](https://github.com/jmciso/concentrado/releases).
+
+## Install from source
+
 
 ### Requirements
 
