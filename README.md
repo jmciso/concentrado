@@ -115,6 +115,14 @@ On first run, the AppImage offers to add itself to the app menu (Settings → *S
 on or off). If you move or update the AppImage file, open it once from its new place and the menu entry
 follows it.
 
+## Credits
+
+Tomate was inspired by [GNOME Pomodoro](https://github.com/focustimerhq/FocusTimer), now
+[Focus Timer](https://focustimerhq.github.io/), by Kamil Prusko ([@kamilprusko](https://github.com/kamilprusko)),
+its lead developer, and Arun Mahapatra ([@codito](https://github.com/codito)), who co-created it in 2011.
+Thank you for years of a great focus timer on the Linux desktop. Tomate is a separate project written from
+scratch. It contains no code from Focus Timer, and isn't affiliated with it.
+
 ## License
 
 Tomate is free software.
@@ -125,3 +133,12 @@ Tomate is free software.
   [Creative Commons Attribution-ShareAlike 4.0](LICENSES/CC-BY-SA-4.0.txt). Reuse it with credit, under the same terms.
 
 If you publish a modified version, please give it a different name so people don't confuse it with Tomate.
+
+## Trademarks
+
+Pomodoro® and Pomodoro Technique® are registered trademarks of Francesco Cirillo. Tomate is not affiliated
+with, authorized by, sponsored by, or otherwise approved by Francesco Cirillo or the Pomodoro Technique®.
+
+The GNOME logo and GNOME name are registered trademarks or trademarks of GNOME Foundation in the United States
+or other countries. Tomate is designed for use with GNOME, but is not affiliated with, endorsed by, or
+sponsored by the GNOME Foundation.
