@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="18 17 92 106">
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7c838c"/><stop offset="0.3" stop-color="#eef1f4"/>
+      <stop offset="0.55" stop-color="#c3c9d0"/><stop offset="1" stop-color="#6b727b"/>
+    </linearGradient>
+    <linearGradient id="lid" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4f6f8"/><stop offset="1" stop-color="#9ba2ab"/>
+    </linearGradient>
+    <linearGradient id="shade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.35"/><stop offset="0.3" stop-color="#fff" stop-opacity="0.18"/>
+      <stop offset="0.6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/>
+    </linearGradient>
+    <radialGradient id="fruit" cx="0.38" cy="0.36" r="0.75">
+      <stop offset="0" stop-color="#ff8a75"/><stop offset="0.55" stop-color="#e8362c"/>
+      <stop offset="1" stop-color="#a3161b"/>
+    </radialGradient>
+  </defs>
+  
+  <path d="M26 30 L26 110 A38 9 0 0 0 102 110 L102 30 Z" fill="url(#metal)"/>
+  <path d="M26 105 A38 9 0 0 0 102 105 L102 107 A38 9 0 0 1 26 107 Z" fill="#000" opacity="0.18"/>
+  <path d="M26 45 A38 9 0 0 0 102 45 L102 99 A38 9 0 0 1 26 99 Z" fill="#d9302a"/>
+  <g transform="translate(38.40 45.40) scale(0.4)">
+    <path d="M64 36 C50 26 30 29 20 44 C10 59 12 86 26 101 C38 114 52 118 64 118 C76 118 90 114 102 101 C116 86 118 59 108 44 C98 29 78 26 64 36Z" fill="#fff"/>
+    <path d="M64.0 38.0 Q52.5 27.0 64.0 28.5 Q75.5 31.0 64.0 38.0Z M64.0 38.0 Q81.7 29.6 96.5 42.1 Q85.7 45.0 64.0 38.0Z M64.0 38.0 Q85.1 41.7 83.4 58.3 Q66.4 52.5 64.0 38.0Z M64.0 38.0 Q58.4 48.2 41.1 56.9 Q41.8 44.2 64.0 38.0Z M64.0 38.0 Q41.4 39.4 32.6 39.9 Q48.5 32.4 64.0 38.0Z" fill="#fff" stroke="#8f1512" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+  <path d="M26 45 A38 9 0 0 0 102 45 L102 99 A38 9 0 0 1 26 99 Z" fill="url(#shade)"/>
+  <ellipse cx="64" cy="30" rx="38" ry="9" fill="url(#lid)" stroke="#6b727b" stroke-width="1"/>
+  <ellipse cx="64" cy="30" rx="33" ry="6.8" fill="none" stroke="#8a919a" stroke-width="1.2" opacity="0.8"/>
+  <ellipse cx="52" cy="28" rx="12" ry="2.2" fill="#fff" opacity="0.6"/>
+</svg>

@@ -52,7 +52,7 @@ run() {
     while [ "$#" -gt 0 ] && [ "$1" != "--" ]; do envs+=("$1"); shift; done
     [ "${1:-}" = "--" ] && shift
     OUT="$(cd "$C/cwd" && env -i PATH="$C/bin:$C/sysbin" HOME="$C" STUB_DIR="$C" LANG=en_US.UTF-8 \
-        TOMATE_OS_RELEASE="$C/os-release" TOMATE_SYSTEM_PYTHON="$C/bin/python3" "${envs[@]}" \
+        CONCENTRADO_OS_RELEASE="$C/os-release" CONCENTRADO_SYSTEM_PYTHON="$C/bin/python3" "${envs[@]}" \
         /bin/sh "$APPRUN" "$@" 2>&1 </dev/null)"
     RC=$?
 }
@@ -80,7 +80,7 @@ DNF="dnf install -y python3 python3-gobject gtk3"
 new_case; os_release 'ID=fedora'; touch "$C/installed"
 run -- --hidden "two words"
 want_rc 0; no_file zenity.log; no_file pkexec.log
-file_is launched "[$ROOT/packaging/appimage/usr/share/tomate/tomate.py]
+file_is launched "[$ROOT/packaging/appimage/usr/share/concentrado/concentrado.py]
 [--hidden]
 [two words]"
 done_case "deps present: launches at once, arguments intact"
@@ -96,7 +96,7 @@ if [ "$1" = "-I" ]; then exit 0; fi
 echo good > "$STUB_DIR/launched"
 EOF
 chmod +x "$C/bin/python3" "$C/good/python3"
-run TOMATE_SYSTEM_PYTHON="$C/good/python3" --
+run CONCENTRADO_SYSTEM_PYTHON="$C/good/python3" --
 want_rc 0; no_file zenity.log; file_is launched "good"
 done_case "python3 on PATH without GTK: falls back to the system python"
 
@@ -104,7 +104,7 @@ done_case "python3 on PATH without GTK: falls back to the system python"
 new_case; os_release 'ID=ubuntu' 'ID_LIKE=debian'; echo yes > "$C/answer"
 run
 want_rc 0; lines_in dialogs.log 1; file_has zenity.log "sudo apt-get update; sudo $APT"; file_has zenity.log "--no-markup"
-file_is pkexec.log "sh -c apt-get update; $APT"; file_has launched "tomate.py"
+file_is pkexec.log "sh -c apt-get update; $APT"; file_has launched "concentrado.py"
 done_case "ubuntu: asks (plain text), installs via pkexec (with apt-get update), then launches"
 
 new_case; os_release 'ID=fedora'; echo no > "$C/answer"
@@ -143,7 +143,7 @@ want_rc 1; no_file pkexec.log; output_has "Run this in a terminal"; output_has "
 done_case "no dialog tool and no terminal: prints the command, installs nothing"
 
 new_case; os_release 'ID=fedora'; echo no > "$C/answer"; rm "$C/bin/python3"
-run TOMATE_SYSTEM_PYTHON="$C/nonexistent" --
+run CONCENTRADO_SYSTEM_PYTHON="$C/nonexistent" --
 want_rc 1; file_has zenity.log "sudo $DNF"
 done_case "no python3 at all: offers to install it"
 
@@ -178,12 +178,12 @@ done_case "no os-release: explains, never asks or installs"
 # --- language ------------------------------------------------------------------------------------------
 new_case; os_release 'ID=fedora'; echo no > "$C/answer"
 run LANG=pt_PT.UTF-8 --
-file_has zenity.log "O Tomate precisa de Python 3 com GTK 3"
+file_has zenity.log "O Concentrado precisa de Python 3 com GTK 3"
 done_case "portuguese via LANG"
 
 new_case; os_release 'ID=fedora'; echo no > "$C/answer"
 run LANG=en_US.UTF-8 LC_ALL=pt_PT.UTF-8 --
-file_has zenity.log "O Tomate precisa"
+file_has zenity.log "O Concentrado precisa"
 done_case "LC_ALL wins over LANG"
 
 # --- os-release is data --------------------------------------------------------------------------------

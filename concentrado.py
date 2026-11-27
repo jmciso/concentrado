@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2026 João Mendes
-"""Tomate: a Pomodoro timer with active breaks (stretching challenges and mini language lessons)."""
+"""Concentrado: a Pomodoro timer with active breaks (stretching challenges and mini language lessons)."""
 
 import importlib
 import json
@@ -24,6 +24,7 @@ import i18n  # noqa: E402
 from i18n import t  # noqa: E402
 import tray  # noqa: E402
 import desktop_integration as di  # noqa: E402
+import migration  # noqa: E402
 
 
 def _optional(namespace, version):
@@ -39,16 +40,16 @@ Gst = _optional("Gst", "1.0")
 if Gst:
     Gst.init(None)
 
-APP_ID = "app.tomate.Pomodoro"
+APP_ID = "io.github.jmciso.Concentrado"
 BASE = Path(__file__).resolve().parent
 CONTENT_DIR = BASE / "content"
 ICON_DIR = BASE / "icons"
 APP_ICON = str(ICON_DIR / "app.svg")
-CONFIG_DIR = Path(GLib.get_user_config_dir()) / "tomate"
-DATA_DIR = Path(GLib.get_user_data_dir()) / "tomate"
+CONFIG_DIR = Path(GLib.get_user_config_dir()) / "concentrado"
+DATA_DIR = Path(GLib.get_user_data_dir()) / "concentrado"
 CONFIG_FILE = CONFIG_DIR / "config.json"
 STATE_FILE = DATA_DIR / "state.json"
-AUTOSTART_FILE = Path(GLib.get_user_config_dir()) / "autostart" / "tomate.desktop"
+AUTOSTART_FILE = Path(GLib.get_user_config_dir()) / "autostart" / "concentrado.desktop"
 SOUND_DIR = Path("/usr/share/sounds/freedesktop/stereo")
 QUIZ_HISTORY_MAX = 2000  # quiz results kept for progress stats
 DATA_HOME = Path(GLib.get_user_data_dir())
@@ -161,7 +162,7 @@ def _label(text, css=None, wrap=False, xalign=0.0):
 
 
 class Content:
-    """Exercises and lessons for the current UI language, plus the user's own files in ~/.config/tomate/."""
+    """Exercises and lessons for the current UI language, plus the user's own files in ~/.config/concentrado/."""
 
     def __init__(self, ui_lang):
         base = CONTENT_DIR / ui_lang
@@ -575,12 +576,12 @@ class BreakOverlay(Gtk.Window):
 
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, app):
-        super().__init__(application=app, title="Tomate")
+        super().__init__(application=app, title="Concentrado")
         self.app = app
         self.set_default_size(340, 380)
         self.set_icon_from_file(APP_ICON)
 
-        header = Gtk.HeaderBar(show_close_button=True, title="Tomate")
+        header = Gtk.HeaderBar(show_close_button=True, title="Concentrado")
         settings = Gtk.Button.new_from_icon_name("emblem-system-symbolic", Gtk.IconSize.BUTTON)
         settings.set_tooltip_text(t("win.settings"))
         settings.connect("clicked", lambda *_: app.open_settings())
@@ -880,7 +881,7 @@ class Tray:
         self.quit = tray.MenuItem(callback=app.quit)
         items = [self.status, tray.separator(), self.toggle, self.skip, self.reset, self.show_break,
                  tray.separator(), self.open, self.progress, self.settings, tray.separator(), self.quit]
-        self.icon = tray.StatusIcon("tomate", "Tomate", str(ICON_DIR / "tomate-paused.svg"), items,
+        self.icon = tray.StatusIcon("concentrado", "Concentrado", str(ICON_DIR / "concentrado-paused.svg"), items,
                                     on_activate=app.show_window, on_secondary=app.toggle)
         self.relabel()
 
@@ -899,7 +900,7 @@ class Tray:
 
     def update(self):
         timer = self.app.timer
-        name = "tomate-paused" if not timer.running else ("tomate" if timer.phase == FOCUS else "tomate-break")
+        name = "concentrado-paused" if not timer.running else ("concentrado-focus" if timer.phase == FOCUS else "concentrado-break")
         self.icon.set_icon(str(ICON_DIR / f"{name}.svg"))
         text = fmt(timer.remaining)
         self.icon.set_label(text if self.app.cfg["tray_label"] else "", "00:00")
@@ -928,7 +929,7 @@ class Sound:
 
 # ---------------------------------------------------------------- application
 
-class TomateApp(Gtk.Application):
+class ConcentradoApp(Gtk.Application):
     def __init__(self):
         super().__init__(application_id=APP_ID, flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
         self.window = None
@@ -945,14 +946,18 @@ class TomateApp(Gtk.Application):
         provider.load_from_data(CSS)
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        # first run after the rename from Tomate: copy its settings and progress (never moves them)
+        _copied, errors = migration.copy_old_dirs(GLib.get_user_config_dir(), GLib.get_user_data_dir(), "concentrado")
+        for err in errors:
+            print("Concentrado: couldn't copy settings from Tomate (will retry next start):", err, file=sys.stderr)
         self.cfg = {**DEFAULTS, **load_json(CONFIG_FILE, {})}
         i18n.set_language(self.cfg["ui_language"] or i18n.system_language())
         self.state = load_json(STATE_FILE, {})
         self.content = Content(i18n.current())
         self.sound = Sound(self)
         self.notification = None
-        if Notify and Notify.init("Tomate"):
-            self.notification = Notify.Notification.new("Tomate", "", APP_ICON)
+        if Notify and Notify.init("Concentrado"):
+            self.notification = Notify.Notification.new("Concentrado", "", APP_ICON)
         self._break_seq = 0
         self._overlay_shown_for = -1
         self._last_text = None
@@ -966,7 +971,7 @@ class TomateApp(Gtk.Application):
         try:
             self.tray = Tray(self)
         except Exception as exc:  # no session bus, etc. The app still works, just without the icon
-            print("Tomate: top-bar icon unavailable:", exc, file=sys.stderr)
+            print("Concentrado: top-bar icon unavailable:", exc, file=sys.stderr)
         self.hold()  # keep running when the window is closed
 
     def do_command_line(self, command_line):
@@ -984,7 +989,7 @@ class TomateApp(Gtk.Application):
                 actions[a]()
                 handled = True
             elif a in ("-h", "--help"):
-                usage = "usage: tomate [--hidden] [--toggle|--skip|--reset|--show|--quit] [--demo]\n"
+                usage = "usage: concentrado [--hidden] [--toggle|--skip|--reset|--show|--quit] [--demo]\n"
                 if hasattr(command_line, "print_literal"):  # GLib >= 2.80; the varargs print() isn't bound
                     command_line.print_literal(usage)
                 else:
@@ -995,6 +1000,8 @@ class TomateApp(Gtk.Application):
                     return 0
         if not handled and not (first and "--hidden" in args):
             self.show_window()
+        if first:
+            self._migrate_launchers()
         if first and IN_APPIMAGE:
             self._appimage_refresh()
             if not handled and "--hidden" not in args:  # only ask when the user is actually looking
@@ -1025,7 +1032,7 @@ class TomateApp(Gtk.Application):
         self.window.present()
 
     def close_to_tray(self):
-        """Closing the window keeps Tomate running in the top bar (or minimised if there's no tray host)."""
+        """Closing the window keeps Concentrado running in the top bar (or minimised if there's no tray host)."""
         if self.tray and self.tray.available:
             self.window.hide()
             if not self.state.get("close_hint_shown"):
@@ -1055,7 +1062,7 @@ class TomateApp(Gtk.Application):
             if app_menu is not None and app_menu != di.is_ours(APP_ID, DATA_HOME):
                 self._set_app_menu(app_menu)
         except OSError as exc:  # e.g. a full disk: report it, don't lose the rest of the save
-            print("Tomate: couldn't update the menu/autostart entry:", exc, file=sys.stderr)
+            print("Concentrado: couldn't update the menu/autostart entry:", exc, file=sys.stderr)
         if self.timer.is_fresh():
             self.timer.reset()
         if ui_changed:
@@ -1082,33 +1089,57 @@ class TomateApp(Gtk.Application):
             if IN_APPIMAGE:
                 di.remove_icon_if_unused(DATA_HOME, di.desktop_path(APP_ID, DATA_HOME))
             return
-        args = di.launcher_args(APPIMAGE_FILE, sys.executable, BASE / "tomate.py") + ["--hidden"]
+        if IN_APPIMAGE and not di.launchable_path(APPIMAGE_FILE):
+            return  # GNOME couldn't launch it; the Settings switch is disabled for such paths too
+        args = di.launcher_args(APPIMAGE_FILE, sys.executable, BASE / "concentrado.py") + ["--hidden"]
         if IN_APPIMAGE:
             # Marked, so it's kept pointing at the AppImage when the file moves (see _appimage_refresh).
             di.write_entry(AUTOSTART_FILE, [
-                ("Type", "Application"), ("Name", "Tomate"), ("Exec", di.exec_line(args)),
+                ("Type", "Application"), ("Name", "Concentrado"), ("Exec", di.exec_line(args)),
                 ("Icon", str(di.ensure_icon(APP_ICON, DATA_HOME))), ("X-GNOME-Autostart-enabled", "true"),
             ])
         else:
             AUTOSTART_FILE.parent.mkdir(parents=True, exist_ok=True)
             AUTOSTART_FILE.write_text(
-                "[Desktop Entry]\nType=Application\nName=Tomate\n"
+                "[Desktop Entry]\nType=Application\nName=Concentrado\n"
                 f"Exec={di.exec_line(args)}\n"
                 f"Icon={APP_ICON}\nX-GNOME-Autostart-enabled=true\n", encoding="utf-8")
 
     # -- AppImage: app-menu entry
     def _set_app_menu(self, enabled):
         if enabled:
-            if not di.integrate(APP_ID, APPIMAGE_FILE, APP_ICON, DATA_HOME, "Tomate", t("appimage.comment")):
+            if not di.integrate(APP_ID, APPIMAGE_FILE, APP_ICON, DATA_HOME, "Concentrado", t("appimage.comment")):
                 self._notify(t("appimage.not_added"), t("set.app_menu_bad_path")
                              if not di.launchable_path(APPIMAGE_FILE) else t("set.app_menu_other"))
         elif di.remove(APP_ID, DATA_HOME):
             autostart_uses_icon = di.is_marked(AUTOSTART_FILE)
             di.remove_icon_if_unused(DATA_HOME, *([AUTOSTART_FILE] if autostart_uses_icon else []))
 
+    def _migrate_launchers(self):
+        """Replace Tomate's autostart and AppImage menu entries (which launch an app that no longer exists
+        under that name) with Concentrado's. Only files recognisably written by Tomate are removed."""
+        try:
+            old = migration.old_autostart(GLib.get_user_config_dir())
+            if old:
+                if not AUTOSTART_FILE.exists():
+                    self._set_autostart(True)
+                if AUTOSTART_FILE.exists():  # replaced: the old one would start a Tomate that's gone
+                    old.unlink()
+        except OSError as exc:
+            print("Concentrado: couldn't migrate Tomate's autostart:", exc, file=sys.stderr)
+        try:
+            old_menu = migration.old_appimage_menu_entry(DATA_HOME)
+            # Only from the AppImage, and only once the new entry exists: never leave the user without one.
+            if old_menu and IN_APPIMAGE:
+                self._set_app_menu(True)
+                if di.is_ours(APP_ID, DATA_HOME):
+                    old_menu.unlink()
+        except OSError as exc:
+            print("Concentrado: couldn't migrate Tomate's menu entry:", exc, file=sys.stderr)
+
     def _appimage_refresh(self):
-        """Keep Tomate's own entries pointing at this AppImage after it was moved or renamed (e.g. by an
-        update). Entries without Tomate's mark are never touched. Never stops Tomate from starting."""
+        """Keep Concentrado's own entries pointing at this AppImage after it was moved or renamed (e.g. by an
+        update). Entries without Concentrado's mark are never touched. Never stops Concentrado from starting."""
         if not di.launchable_path(APPIMAGE_FILE):
             return  # GNOME couldn't launch this path anyway; leave the existing entries as they are
         try:
@@ -1117,7 +1148,7 @@ class TomateApp(Gtk.Application):
             if di.exec_differs(AUTOSTART_FILE, [APPIMAGE_FILE, "--hidden"]):
                 self._set_autostart(True)
         except OSError as exc:
-            print("Tomate: couldn't update the menu/autostart entry:", exc, file=sys.stderr)
+            print("Concentrado: couldn't update the menu/autostart entry:", exc, file=sys.stderr)
 
     def _appimage_offer_menu(self):
         """First run of the AppImage: offer an app-menu entry, once."""
@@ -1293,8 +1324,8 @@ class TomateApp(Gtk.Application):
 
 def main():
     GLib.set_prgname(APP_ID)
-    GLib.set_application_name("Tomate")
-    return TomateApp().run(sys.argv)
+    GLib.set_application_name("Concentrado")
+    return ConcentradoApp().run(sys.argv)
 
 
 if __name__ == "__main__":

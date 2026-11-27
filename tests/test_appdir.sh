@@ -22,12 +22,12 @@ ok()   { echo "ok    $1"; }
 fail() { echo "FAIL  $1"; failures=$((failures + 1)); [ -n "${2:-}" ] && [ -f "$2" ] && sed 's/^/      | /' "$2" | tail -15; }
 
 OUT="$T/dist" "$ROOT/packaging/appimage/build.sh" --appdir-only >"$T/build.log" 2>&1 || { fail "AppDir build" "$T/build.log"; exit 1; }
-APPDIR="$T/dist/Tomate.AppDir"
-APP_ID="$(sed -n 's/^APP_ID = "\(.*\)"$/\1/p' "$ROOT/tomate.py")"
+APPDIR="$T/dist/Concentrado.AppDir"
+APP_ID="$(sed -n 's/^APP_ID = "\(.*\)"$/\1/p' "$ROOT/concentrado.py")"
 
 # --- layout ---------------------------------------------------------------------------------------------
-for f in AppRun "$APP_ID.desktop" "$APP_ID.svg" .DirIcon usr/share/tomate/tomate.py usr/share/tomate/desktop_integration.py \
-         usr/share/tomate/content/en/exercises.json usr/share/tomate/LICENSE; do
+for f in AppRun "$APP_ID.desktop" "$APP_ID.svg" .DirIcon usr/share/concentrado/concentrado.py usr/share/concentrado/desktop_integration.py usr/share/concentrado/migration.py \
+         usr/share/concentrado/content/en/exercises.json usr/share/concentrado/LICENSE; do
     [ -e "$APPDIR/$f" ] && ok "AppDir has $f" || fail "AppDir is missing $f"
 done
 [ -x "$APPDIR/AppRun" ] && ok "AppRun is executable" || fail "AppRun not executable"
@@ -40,7 +40,7 @@ BW=$!
 for _ in $(seq 50); do [ -S "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/broadway$((N + 1)).socket" ] && break; sleep 0.1; done
 kill -0 "$BW" 2>/dev/null || { fail "broadwayd didn't start" "$T/broadwayd.log"; exit 1; }
 
-FAKE_APPIMAGE="$T/My Apps/Tomate-test.AppImage"   # a path with a space, on purpose
+FAKE_APPIMAGE="$T/My Apps/Concentrado-test.AppImage"   # a path with a space, on purpose
 mkdir -p "$(dirname "$FAKE_APPIMAGE")"
 printf '#!/bin/sh\nexit 0\n' > "$FAKE_APPIMAGE"; chmod +x "$FAKE_APPIMAGE"
 
@@ -78,7 +78,7 @@ wait $pid; rc=$?
 exit $rc'
 
 entry="$T/data/applications/$APP_ID.desktop"
-autostart="$T/config/autostart/tomate.desktop"
+autostart="$T/config/autostart/concentrado.desktop"
 exec_of() {  # the argv of a .desktop Exec=, as GLib parses it, one per line
     python3 -I - "$1" <<'EOF'
 import sys
@@ -87,25 +87,25 @@ kf = GLib.KeyFile(); kf.load_from_file(sys.argv[1], GLib.KeyFileFlags.NONE)
 print("\n".join(GLib.shell_parse_argv(kf.get_string("Desktop Entry", "Exec"))[1]))
 EOF
 }
-seed() {  # seed KIND PATH ARGS...  -> a Tomate-marked entry (KIND=menu|autostart) pointing at ARGS
+seed() {  # seed KIND PATH ARGS...  -> a Concentrado-marked entry (KIND=menu|autostart) pointing at ARGS
     python3 -I - "$ROOT" "$@" <<'EOF'
 import sys
 sys.path.insert(0, sys.argv[1])
 import desktop_integration as di
 kind, path, args = sys.argv[2], sys.argv[3], sys.argv[4:]
-di.write_entry(path, [("Type", "Application"), ("Name", "Tomate"), ("Exec", di.exec_line(args))])
+di.write_entry(path, [("Type", "Application"), ("Name", "Concentrado"), ("Exec", di.exec_line(args))])
 EOF
 }
 
 # --- 1. --help prints usage and exits ------------------------------------------------------------------------
 session 'run_app '"$APPIMAGE_ENV"' "'"$APPDIR"'/AppRun" --help' >"$T/help.log" 2>&1
 rc=$?
-[ "$rc" = 0 ] && grep -q "usage: tomate" "$T/help.log" && ok "--help prints usage and exits" \
+[ "$rc" = 0 ] && grep -q "usage: concentrado" "$T/help.log" && ok "--help prints usage and exits" \
     || fail "--help (exit $rc)" "$T/help.log"
 
-# --- 2. moved AppImage: Tomate's own menu + autostart entries follow it ---------------------------------------
-seed menu "$entry" "/old/place/Tomate.AppImage"
-seed autostart "$autostart" "/old/place/Tomate.AppImage" "--hidden"
+# --- 2. moved AppImage: Concentrado's own menu + autostart entries follow it ---------------------------------------
+seed menu "$entry" "/old/place/Concentrado.AppImage"
+seed autostart "$autostart" "/old/place/Concentrado.AppImage" "--hidden"
 session "$start_and_quit" >"$T/s2.log" 2>&1; rc=$?
 [ "$rc" = 0 ] && ok "app starts and quits cleanly" || fail "start/quit (exit $rc)" "$T/app.log"
 [ "$(exec_of "$entry")" = "$FAKE_APPIMAGE" ] && ok "menu entry follows the moved AppImage" \
@@ -113,25 +113,25 @@ session "$start_and_quit" >"$T/s2.log" 2>&1; rc=$?
 [ "$(exec_of "$autostart")" = "$FAKE_APPIMAGE
 --hidden" ] && ok "autostart entry follows the moved AppImage" || fail "autostart not refreshed: $(exec_of "$autostart" | tr '\n' ' ')"
 
-# --- 3. entries without Tomate's mark are never touched ------------------------------------------------------
+# --- 3. entries without Concentrado's mark are never touched ------------------------------------------------------
 foreign="[Desktop Entry]
 Type=Application
-Name=Tomate
-Exec=/src/tomate.py"
+Name=Concentrado
+Exec=/src/concentrado.py"
 printf '%s\n' "$foreign" > "$entry"; printf '%s\n' "$foreign --hidden" > "$autostart"
 session "$start_and_quit" >"$T/s3.log" 2>&1; rc=$?
 [ "$rc" = 0 ] && [ "$(cat "$entry")" = "$foreign" ] && [ "$(cat "$autostart")" = "$foreign --hidden" ] \
     && ok "foreign menu and autostart entries untouched" || fail "foreign entries were modified (exit $rc)" "$T/app.log"
 
 # --- 4. APPIMAGE leaking in from a parent process doesn't switch on AppImage mode ----------------------------
-seed menu "$entry" "/old/place/Tomate.AppImage"
+seed menu "$entry" "/old/place/Concentrado.AppImage"
 leak='
-run_app APPIMAGE="'"$FAKE_APPIMAGE"'" python3 "'"$APPDIR"'/usr/share/tomate/tomate.py" --hidden >"'"$T"'/app.log" 2>&1 &
+run_app APPIMAGE="'"$FAKE_APPIMAGE"'" python3 "'"$APPDIR"'/usr/share/concentrado/concentrado.py" --hidden >"'"$T"'/app.log" 2>&1 &
 pid=$!
 wait_ready || { kill $pid; exit 2; }
-run_app python3 "'"$APPDIR"'/usr/share/tomate/tomate.py" --quit; wait $pid'
+run_app python3 "'"$APPDIR"'/usr/share/concentrado/concentrado.py" --quit; wait $pid'
 session "$leak" >"$T/s4.log" 2>&1; rc=$?
-[ "$rc" = 0 ] && [ "$(exec_of "$entry")" = "/old/place/Tomate.AppImage" ] \
+[ "$rc" = 0 ] && [ "$(exec_of "$entry")" = "/old/place/Concentrado.AppImage" ] \
     && ok "APPIMAGE without APPDIR is ignored" || fail "leaked APPIMAGE changed the entry (exit $rc)" "$T/app.log"
 
 # --- 5. saving Settings without touching the autostart switch leaves a foreign autostart entry alone --------
@@ -140,13 +140,13 @@ rm -f "$entry"
 settings='
 run_app '"$APPIMAGE_ENV"' python3 -I - >"'"$T"'/app.log" 2>&1 <<PY
 import sys
-sys.path.insert(0, "'"$APPDIR"'/usr/share/tomate")
-sys.argv = ["tomate", "--hidden"]
-import tomate
+sys.path.insert(0, "'"$APPDIR"'/usr/share/concentrado")
+sys.argv = ["concentrado", "--hidden"]
+import concentrado
 from gi.repository import GLib
-app = tomate.TomateApp()
+app = concentrado.ConcentradoApp()
 def save():
-    assert tomate.IN_APPIMAGE
+    assert concentrado.IN_APPIMAGE
     app.apply_settings(dict(app.cfg), None, None)   # what OK does when only other settings changed
     app.quit()
 GLib.timeout_add(500, save)
@@ -155,6 +155,28 @@ PY'
 session "$settings" >"$T/s5.log" 2>&1; rc=$?
 [ "$rc" = 0 ] && [ "$(cat "$autostart")" = "$foreign --hidden" ] \
     && ok "saving Settings leaves a foreign autostart entry alone" || fail "Settings save touched autostart (exit $rc)" "$T/app.log"
+
+# --- 6. upgrade from Tomate: settings copied (old kept), Tomate's launchers replaced by Concentrado's ------
+rm -rf "$T/config" "$T/data"
+mkdir -p "$T/config/tomate" "$T/data/tomate" "$T/config/autostart" "$T/data/applications"
+echo '{"focus_min": 7, "language": "de"}' > "$T/config/tomate/config.json"
+echo '{"stats": {"2026-11-26": 3}}' > "$T/data/tomate/state.json"
+printf '[Desktop Entry]\nType=Application\nName=Tomate\nExec=/old/Tomate.AppImage --hidden\nX-Tomate-AppImage=true\n' > "$T/config/autostart/tomate.desktop"
+printf '[Desktop Entry]\nType=Application\nName=Tomate\nExec=/old/Tomate.AppImage\nX-Tomate-AppImage=true\n' \
+    > "$T/data/applications/app.tomate.Pomodoro.desktop"
+printf '%s\n' "[Desktop Entry]" "Name=Other" "Exec=/usr/bin/true" > "$T/data/applications/other.desktop"
+session "$start_and_quit" >"$T/s6.log" 2>&1; rc=$?
+[ "$rc" = 0 ] && ok "upgrade run starts and quits cleanly" || fail "upgrade run (exit $rc)" "$T/app.log"
+grep -q '"focus_min": 7' "$T/config/concentrado/config.json" 2>/dev/null && grep -q '"2026-11-26": 3' "$T/data/concentrado/state.json" 2>/dev/null \
+    && ok "settings and progress carried over" || fail "settings/progress not carried over"
+[ -f "$T/config/tomate/config.json" ] && [ -f "$T/data/tomate/state.json" ] && ok "old Tomate folders kept" || fail "old folders were touched"
+[ ! -e "$T/config/autostart/tomate.desktop" ] && [ "$(exec_of "$autostart" 2>/dev/null)" = "$FAKE_APPIMAGE
+--hidden" ] && ok "autostart moved to Concentrado" || fail "autostart not migrated: $(ls "$T/config/autostart")"
+[ ! -e "$T/data/applications/app.tomate.Pomodoro.desktop" ] && [ "$(exec_of "$entry" 2>/dev/null)" = "$FAKE_APPIMAGE" ] \
+    && ok "AppImage menu entry moved to Concentrado" || fail "menu entry not migrated: $(ls "$T/data/applications")"
+[ "$(cat "$T/data/applications/other.desktop")" = "[Desktop Entry]
+Name=Other
+Exec=/usr/bin/true" ] && ok "other apps' entries untouched" || fail "another app's entry changed"
 
 echo
 [ "$failures" = 0 ] && echo "appdir: all passed" || echo "appdir: $failures failed"

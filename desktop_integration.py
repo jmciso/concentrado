@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2026 João Mendes
-"""App-menu and autostart entries for the AppImage, and the command line that relaunches Tomate.
+"""App-menu and autostart entries for the AppImage, and the command line that relaunches Concentrado.
 
-AppImages don't add themselves to the app menu, so Tomate offers to do it. Every entry Tomate writes
-for the AppImage carries the MARK line; Tomate only ever rewrites or deletes entries carrying it, so an
+AppImages don't add themselves to the app menu, so Concentrado offers to do it. Every entry Concentrado writes
+for the AppImage carries the MARK line; Concentrado only ever rewrites or deletes entries carrying it, so an
 entry made by install.sh, a distro package or the user is never touched. A marked entry *is* rewritten
 when the AppImage moves (e.g. after an update), so hand edits to a marked entry don't survive that.
 """
@@ -11,7 +11,7 @@ when the AppImage moves (e.g. after an update), so hand edits to a marked entry 
 import shutil
 from pathlib import Path
 
-MARK = "X-Tomate-AppImage=true"
+MARK = "X-Concentrado-AppImage=true"
 
 
 def desktop_path(app_id, data_home):
@@ -19,7 +19,7 @@ def desktop_path(app_id, data_home):
 
 
 def icon_path(data_home):
-    return Path(data_home) / "tomate" / "appimage-icon.svg"
+    return Path(data_home) / "concentrado" / "appimage-icon.svg"
 
 
 _RESERVED = set(' \t"\'\\><~|&;$*?#()`')
@@ -49,7 +49,7 @@ def exec_line(args):
 
 
 def launcher_args(appimage, python, script):
-    """Command that starts Tomate again later (menu entry, autostart). Inside an AppImage, the
+    """Command that starts Concentrado again later (menu entry, autostart). Inside an AppImage, the
     script lives in a temporary mount that disappears on exit, so it must be the AppImage file."""
     return [appimage] if appimage else [python, str(script)]
 
@@ -103,7 +103,7 @@ def is_ours(app_id, data_home):
 
 
 def integrate(app_id, appimage, icon_src, data_home, name, comment):
-    """Create (or refresh) Tomate's own menu entry. Returns False, writing nothing, if an entry that
+    """Create (or refresh) Concentrado's own menu entry. Returns False, writing nothing, if an entry that
     isn't ours exists or if GNOME couldn't launch this path."""
     path = desktop_path(app_id, data_home)
     if (path.exists() and not is_ours(app_id, data_home)) or not launchable_path(appimage):
@@ -123,7 +123,7 @@ def needs_refresh(app_id, appimage, data_home):
 
 
 def remove(app_id, data_home):
-    """Delete Tomate's own menu entry. Entries that aren't ours are left alone. The icon copy stays
+    """Delete Concentrado's own menu entry. Entries that aren't ours are left alone. The icon copy stays
     if a marked autostart entry still uses it."""
     path = desktop_path(app_id, data_home)
     if not is_marked(path):

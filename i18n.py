@@ -20,7 +20,7 @@ STRINGS = {
         "duration": "{m} min {s:02d} s",
         "duration.short": "{s} s",
         # overlay
-        "overlay.title": "Tomate: break",
+        "overlay.title": "Concentrado: break",
         "overlay.long_msg": "Long break. You've earned it! Really get away from your desk.",
         "overlay.short_msgs": [
             "Get up from your desk. Your body will thank you.",
@@ -95,11 +95,11 @@ STRINGS = {
         "set.ui_language": "App language",
         "set.autostart": "Start with the session",
         "set.app_menu": "Show in the app menu",
-        "set.app_menu_other": "Tomate is already in the app menu from another installation",
+        "set.app_menu_other": "Concentrado is already in the app menu from another installation",
         "set.app_menu_bad_path": "GNOME can't launch an AppImage whose path contains % or a line break. Move or rename it.",
         # AppImage
-        "appimage.ask_title": "Add Tomate to your apps?",
-        "appimage.ask_body": "Add Tomate to your applications menu so you can open it like any other app. "
+        "appimage.ask_title": "Add Concentrado to your apps?",
+        "appimage.ask_body": "Add Concentrado to your applications menu so you can open it like any other app. "
                              "If you move the AppImage file later, just open it once from its new place.",
         "appimage.add": "Add to menu",
         "appimage.not_added": "Not added to the app menu",
@@ -143,7 +143,7 @@ STRINGS = {
         "notify.press_start": "Press Start when you're ready.",
         "notify.break_time": "Break time! 🍅",
         "notify.break_body": "{phase}, {mins} min. Get up from your desk.",
-        "notify.still_running": "Tomate is still running",
+        "notify.still_running": "Concentrado is still running",
         "notify.still_running_body": "It's in the top bar. Use Quit in its menu to close it.",
     },
     "pt": {
@@ -157,7 +157,7 @@ STRINGS = {
         "activity.rest": "Só descansar",
         "duration": "{m} min {s:02d} s",
         "duration.short": "{s} s",
-        "overlay.title": "Tomate: pausa",
+        "overlay.title": "Concentrado: pausa",
         "overlay.long_msg": "Pausa longa. Mereceste! Sai mesmo da secretária.",
         "overlay.short_msgs": [
             "Levanta-te da secretária. O teu corpo agradece.",
@@ -227,10 +227,10 @@ STRINGS = {
         "set.ui_language": "Idioma da app",
         "set.autostart": "Arrancar com a sessão",
         "set.app_menu": "Mostrar no menu de aplicações",
-        "set.app_menu_other": "O Tomate já está no menu de aplicações através de outra instalação",
+        "set.app_menu_other": "O Concentrado já está no menu de aplicações através de outra instalação",
         "set.app_menu_bad_path": "O GNOME não consegue abrir um AppImage cujo caminho tenha % ou uma quebra de linha. Move-o ou muda-lhe o nome.",
-        "appimage.ask_title": "Adicionar o Tomate às tuas aplicações?",
-        "appimage.ask_body": "Adiciona o Tomate ao menu de aplicações para o abrires como qualquer outra app. "
+        "appimage.ask_title": "Adicionar o Concentrado às tuas aplicações?",
+        "appimage.ask_body": "Adiciona o Concentrado ao menu de aplicações para o abrires como qualquer outra app. "
                              "Se mais tarde moveres o ficheiro AppImage, abre-o uma vez a partir do novo sítio.",
         "appimage.add": "Adicionar ao menu",
         "appimage.not_added": "Não foi adicionado ao menu de aplicações",
@@ -271,7 +271,7 @@ STRINGS = {
         "notify.press_start": "Carrega em Iniciar quando estiveres pronto.",
         "notify.break_time": "Hora da pausa! 🍅",
         "notify.break_body": "{phase} de {mins} min. Levanta-te da secretária.",
-        "notify.still_running": "O Tomate continua a correr",
+        "notify.still_running": "O Concentrado continua a correr",
         "notify.still_running_body": "Está na barra superior. Usa Sair no menu para o fechar.",
     },
 }

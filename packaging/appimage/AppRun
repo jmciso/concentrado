@@ -2,18 +2,18 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2026 João Mendes
 #
-# AppImage entry point for Tomate. This is a "light" AppImage: it ships only Tomate itself and runs on the
+# AppImage entry point for Concentrado. This is a "light" AppImage: it ships only Concentrado itself and runs on the
 # system's Python 3 (>= 3.9) + PyGObject + GTK 3, installed by default on Ubuntu Desktop and Fedora
 # Workstation. If they're missing, explain what's needed and offer to install them. The system password
 # prompt (pkexec) is the user's consent: nothing is ever installed silently.
 #
 # Two variables only say *where to look*, so tests can point them at fixtures (they never skip a check):
-#   TOMATE_OS_RELEASE     os-release file to read (default /etc/os-release)
-#   TOMATE_SYSTEM_PYTHON  fallback interpreter if `python3` on PATH lacks GTK (default /usr/bin/python3)
+#   CONCENTRADO_OS_RELEASE     os-release file to read (default /etc/os-release)
+#   CONCENTRADO_SYSTEM_PYTHON  fallback interpreter if `python3` on PATH lacks GTK (default /usr/bin/python3)
 
 set -u
 HERE="$(dirname "$(readlink -f "$0")")"
-APP="$HERE/usr/share/tomate/tomate.py"
+APP="$HERE/usr/share/concentrado/concentrado.py"
 export PYTHONDONTWRITEBYTECODE=1  # the AppImage is a read-only mount
 
 is_pt() {
@@ -23,11 +23,11 @@ is_pt() {
     esac
 }
 
-# Sets PY to the first interpreter that can run Tomate. Tries `python3` on PATH first, then the system
+# Sets PY to the first interpreter that can run Concentrado. Tries `python3` on PATH first, then the system
 # one (conda/pyenv/venv interpreters usually have no GTK bindings).
 find_python() {
     PY=""
-    for candidate in "$(command -v python3 2>/dev/null)" "${TOMATE_SYSTEM_PYTHON:-/usr/bin/python3}"; do
+    for candidate in "$(command -v python3 2>/dev/null)" "${CONCENTRADO_SYSTEM_PYTHON:-/usr/bin/python3}"; do
         [ -n "$candidate" ] && [ -x "$candidate" ] || continue
         # -I: don't import anything from the current directory
         if "$candidate" -I -c "import sys, gi; assert sys.version_info >= (3, 9); gi.require_version('Gtk', '3.0'); from gi.repository import Gtk" >/dev/null 2>&1; then
@@ -42,7 +42,7 @@ find_python() {
 # /etc/os-release is parsed, never sourced, and its words are never glob-expanded.
 detect_package_manager() {
     PM_UPDATE=""; PM_INSTALL=""
-    osr="${TOMATE_OS_RELEASE:-/etc/os-release}"
+    osr="${CONCENTRADO_OS_RELEASE:-/etc/os-release}"
     [ -r "$osr" ] || return 0
     ids=$(sed -n 's/^ID=//p; s/^ID_LIKE=//p' "$osr" | tr -d "\"'")
     set -f
@@ -106,7 +106,7 @@ if ! find_python; then
         run="$PM_INSTALL"
     fi
     if is_pt; then
-        title="O Tomate precisa de Python 3 com GTK 3"
+        title="O Concentrado precisa de Python 3 com GTK 3"
         missing="Falta o Python 3 (3.9 ou mais recente) com suporte para GTK 3 (PyGObject) neste sistema."
         yes="Instalar"; no="Cancelar"
         prompt="Pode ser instalado com:
@@ -123,7 +123,7 @@ Instalar agora? Vai ser pedida a tua password."
 
     $shown"
     else
-        title="Tomate needs Python 3 with GTK 3"
+        title="Concentrado needs Python 3 with GTK 3"
         missing="Python 3 (3.9 or newer) with GTK 3 support (PyGObject) isn't installed on this system."
         yes="Install"; no="Cancel"
         prompt="It can be installed with:
