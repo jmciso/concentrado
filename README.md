@@ -35,8 +35,8 @@ KDE and most other desktops support it natively. Without it the app still works:
 ### Steps
 
 ```sh
-git clone https://github.com/jmciso/tomate.git
-cd tomate
+git clone https://github.com/jmciso/concentrado.git
+cd concentrado
 ./install.sh
 ```
 
