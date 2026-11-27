@@ -1,0 +1,177 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 João Mendes
+#
+# AppImage entry point for Tomate. This is a "light" AppImage: it ships only Tomate itself and runs on the
+# system's Python 3 (>= 3.9) + PyGObject + GTK 3, installed by default on Ubuntu Desktop and Fedora
+# Workstation. If they're missing, explain what's needed and offer to install them. The system password
+# prompt (pkexec) is the user's consent: nothing is ever installed silently.
+#
+# Two variables only say *where to look*, so tests can point them at fixtures (they never skip a check):
+#   TOMATE_OS_RELEASE     os-release file to read (default /etc/os-release)
+#   TOMATE_SYSTEM_PYTHON  fallback interpreter if `python3` on PATH lacks GTK (default /usr/bin/python3)
+
+set -u
+HERE="$(dirname "$(readlink -f "$0")")"
+APP="$HERE/usr/share/tomate/tomate.py"
+export PYTHONDONTWRITEBYTECODE=1  # the AppImage is a read-only mount
+
+is_pt() {
+    case "${LC_ALL:-${LC_MESSAGES:-${LANGUAGE:-${LANG:-}}}}" in
+        pt*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+# Sets PY to the first interpreter that can run Tomate. Tries `python3` on PATH first, then the system
+# one (conda/pyenv/venv interpreters usually have no GTK bindings).
+find_python() {
+    PY=""
+    for candidate in "$(command -v python3 2>/dev/null)" "${TOMATE_SYSTEM_PYTHON:-/usr/bin/python3}"; do
+        [ -n "$candidate" ] && [ -x "$candidate" ] || continue
+        # -I: don't import anything from the current directory
+        if "$candidate" -I -c "import sys, gi; assert sys.version_info >= (3, 9); gi.require_version('Gtk', '3.0'); from gi.repository import Gtk" >/dev/null 2>&1; then
+            PY="$candidate"
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Sets PM_UPDATE (may be empty) and PM_INSTALL for this distro; both empty if the distro is unknown.
+# /etc/os-release is parsed, never sourced, and its words are never glob-expanded.
+detect_package_manager() {
+    PM_UPDATE=""; PM_INSTALL=""
+    osr="${TOMATE_OS_RELEASE:-/etc/os-release}"
+    [ -r "$osr" ] || return 0
+    ids=$(sed -n 's/^ID=//p; s/^ID_LIKE=//p' "$osr" | tr -d "\"'")
+    set -f
+    for id in $ids; do
+        case "$id" in
+            debian|ubuntu)
+                PM_UPDATE="apt-get update"
+                PM_INSTALL="apt-get install -y python3 python3-gi gir1.2-gtk-3.0"; break ;;
+            fedora|rhel|centos)
+                PM_INSTALL="dnf install -y python3 python3-gobject gtk3"; break ;;
+            opensuse*|suse|sles)
+                PM_INSTALL="zypper --non-interactive install python3 python3-gobject python3-gobject-Gdk typelib-1_0-Gtk-3_0"; break ;;
+            arch|manjaro|endeavouros)
+                PM_INSTALL="pacman -S --needed --noconfirm python python-gobject gtk3"; break ;;
+        esac
+    done
+    set +f
+}
+
+# ask TITLE TEXT YES_LABEL NO_LABEL -> 0 if the user accepted. Without any way to ask, it returns 1.
+ask() {
+    printf '%s\n\n%s\n' "$1" "$2" >&2
+    if command -v zenity >/dev/null 2>&1; then
+        zenity --question --no-markup --title="$1" --text="$2" --ok-label="$3" --cancel-label="$4" --width=480 2>/dev/null
+    elif command -v kdialog >/dev/null 2>&1; then
+        kdialog --title "$1" --yesno "$2" --yes-label "$3" --no-label "$4" 2>/dev/null
+    elif [ -t 0 ] && [ -t 1 ]; then
+        printf '[y/N] ' >&2
+        read -r answer
+        case "$answer" in y|Y|s|S) return 0 ;; *) return 1 ;; esac
+    else
+        return 1
+    fi
+}
+
+# inform TITLE TEXT (always also on stderr, for launches from a terminal or a log)
+inform() {
+    printf '%s\n\n%s\n' "$1" "$2" >&2
+    if command -v zenity >/dev/null 2>&1; then
+        zenity --info --no-markup --title="$1" --text="$2" --width=480 2>/dev/null
+    elif command -v kdialog >/dev/null 2>&1; then
+        kdialog --title "$1" --msgbox "$2" 2>/dev/null
+    elif command -v notify-send >/dev/null 2>&1; then
+        notify-send "$1" "$2" 2>/dev/null
+    fi
+    return 0
+}
+
+can_ask() {
+    command -v zenity >/dev/null 2>&1 || command -v kdialog >/dev/null 2>&1 || { [ -t 0 ] && [ -t 1 ]; }
+}
+
+if ! find_python; then
+    detect_package_manager
+    if [ -n "$PM_UPDATE" ]; then
+        # `;` not `&&`: one broken third-party repo shouldn't block the install
+        shown="sudo $PM_UPDATE; sudo $PM_INSTALL"
+        run="$PM_UPDATE; $PM_INSTALL"
+    else
+        shown="sudo $PM_INSTALL"
+        run="$PM_INSTALL"
+    fi
+    if is_pt; then
+        title="O Tomate precisa de Python 3 com GTK 3"
+        missing="Falta o Python 3 (3.9 ou mais recente) com suporte para GTK 3 (PyGObject) neste sistema."
+        yes="Instalar"; no="Cancelar"
+        prompt="Pode ser instalado com:
+
+    $shown
+
+Instalar agora? Vai ser pedida a tua password."
+        manual="Instala com o gestor de pacotes da tua distribuição: Python 3.9+, PyGObject e GTK 3 (typelib Gtk-3.0)."
+        run_it="Corre isto num terminal:
+
+    $shown"
+        no_permission="Não foi possível obter permissão para instalar."
+        failed="A instalação não ficou completa. Atualiza o sistema e tenta de novo, ou corre num terminal:
+
+    $shown"
+    else
+        title="Tomate needs Python 3 with GTK 3"
+        missing="Python 3 (3.9 or newer) with GTK 3 support (PyGObject) isn't installed on this system."
+        yes="Install"; no="Cancel"
+        prompt="It can be installed with:
+
+    $shown
+
+Install it now? You'll be asked for your password."
+        manual="Install these with your distribution's package manager: Python 3.9+, PyGObject and GTK 3 (Gtk-3.0 typelib)."
+        run_it="Run this in a terminal:
+
+    $shown"
+        no_permission="Couldn't get permission to install."
+        failed="The installation didn't complete. Update your system and try again, or run this in a terminal:
+
+    $shown"
+    fi
+
+    if [ -z "$PM_INSTALL" ]; then
+        inform "$title" "$missing
+
+$manual"
+        exit 1
+    fi
+    if ! can_ask || ! command -v pkexec >/dev/null 2>&1; then
+        inform "$title" "$missing
+
+$run_it"
+        exit 1
+    fi
+    if ! ask "$title" "$missing
+
+$prompt" "$yes" "$no"; then
+        exit 1
+    fi
+    pkexec sh -c "$run"   # $run is one of the fixed commands above
+    rc=$?
+    case "$rc" in
+        0) ;;
+        126) exit 1 ;;  # the user dismissed the password prompt: that's a "no", not an error
+        127) inform "$title" "$no_permission
+
+$run_it"; exit 1 ;;  # not authorised, or the command is missing
+        *) inform "$title" "$failed"; exit 1 ;;
+    esac
+    if ! find_python; then
+        inform "$title" "$failed"
+        exit 1
+    fi
+fi
+
+exec "$PY" "$APP" "$@"

@@ -6,6 +6,7 @@
 import importlib
 import json
 import math
+import os
 import random
 import sys
 import time
@@ -22,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import i18n  # noqa: E402
 from i18n import t  # noqa: E402
 import tray  # noqa: E402
+import desktop_integration as di  # noqa: E402
 
 
 def _optional(namespace, version):
@@ -49,6 +51,14 @@ STATE_FILE = DATA_DIR / "state.json"
 AUTOSTART_FILE = Path(GLib.get_user_config_dir()) / "autostart" / "tomate.desktop"
 SOUND_DIR = Path("/usr/share/sounds/freedesktop/stereo")
 QUIZ_HISTORY_MAX = 2000  # quiz results kept for progress stats
+DATA_HOME = Path(GLib.get_user_data_dir())
+
+# Running from an AppImage? The runtime sets APPIMAGE (the file) and APPDIR (its temporary mount).
+# Both are checked, because APPIMAGE alone can leak in from a parent process that is itself an AppImage.
+_appdir = os.environ.get("APPDIR")
+IN_APPIMAGE = bool(os.environ.get("APPIMAGE") and _appdir and Path(os.environ["APPIMAGE"]).is_absolute()
+                   and BASE.is_relative_to(Path(_appdir).resolve()))
+APPIMAGE_FILE = os.environ.get("APPIMAGE") if IN_APPIMAGE else None
 
 DEFAULTS = {
     "ui_language": "",  # empty = follow the system language
@@ -694,6 +704,21 @@ class SettingsDialog(Gtk.Dialog):
         section(t("set.system"))
         combo("ui_language", t("set.ui_language"), i18n.LANGUAGES, i18n.current())
         self.autostart = switch(None, t("set.autostart"), active=AUTOSTART_FILE.exists())
+        self.autostart_initial = self.autostart.get_active()
+        if IN_APPIMAGE and not self.autostart_initial and not di.launchable_path(APPIMAGE_FILE):
+            self.autostart.set_sensitive(False)
+            self.autostart.set_tooltip_text(t("set.app_menu_bad_path"))
+        self.app_menu = None
+        if IN_APPIMAGE:
+            ours = di.is_ours(APP_ID, DATA_HOME)
+            self.app_menu = switch(None, t("set.app_menu"), active=ours)
+            # an entry from another install (install.sh, a distro package) isn't ours to change
+            if not ours and di.entry_exists(APP_ID, DATA_HOME):
+                self.app_menu.set_sensitive(False)
+                self.app_menu.set_tooltip_text(t("set.app_menu_other"))
+            elif not ours and not di.launchable_path(APPIMAGE_FILE):
+                self.app_menu.set_sensitive(False)
+                self.app_menu.set_tooltip_text(t("set.app_menu_bad_path"))
         self.show_all()
 
     def collect(self):
@@ -705,7 +730,12 @@ class SettingsDialog(Gtk.Dialog):
                 out[key] = w.get_active()
             else:
                 out[key] = w.get_active_id()
-        return out, self.autostart.get_active()
+        app_menu = (self.app_menu.get_active()
+                    if self.app_menu is not None and self.app_menu.get_sensitive() else None)
+        # None = leave as is: only an actual flip of the switch touches the autostart file
+        autostart = self.autostart.get_active()
+        autostart = None if autostart == self.autostart_initial or not self.autostart.get_sensitive() else autostart
+        return out, autostart, app_menu
 
 
 # ---------------------------------------------------------------- language progress
@@ -954,10 +984,21 @@ class TomateApp(Gtk.Application):
                 actions[a]()
                 handled = True
             elif a in ("-h", "--help"):
-                command_line.print_("usage: tomate [--hidden] [--toggle|--skip|--reset|--show|--quit] [--demo]\n")
+                usage = "usage: tomate [--hidden] [--toggle|--skip|--reset|--show|--quit] [--demo]\n"
+                if hasattr(command_line, "print_literal"):  # GLib >= 2.80; the varargs print() isn't bound
+                    command_line.print_literal(usage)
+                else:
+                    print(usage, end="")
                 handled = True
+                if first:  # nothing else asked for: don't leave an instance running in the background
+                    self.quit()
+                    return 0
         if not handled and not (first and "--hidden" in args):
             self.show_window()
+        if first and IN_APPIMAGE:
+            self._appimage_refresh()
+            if not handled and "--hidden" not in args:  # only ask when the user is actually looking
+                GLib.idle_add(self._appimage_offer_menu)
         self.refresh()
         return 0
 
@@ -998,14 +1039,23 @@ class TomateApp(Gtk.Application):
     def open_settings(self):
         dlg = SettingsDialog(self)
         response = dlg.run()
-        values, autostart = dlg.collect()
+        values, autostart, app_menu = dlg.collect()
         dlg.destroy()
-        if response != Gtk.ResponseType.OK:
-            return
+        if response == Gtk.ResponseType.OK:
+            self.apply_settings(values, autostart, app_menu)
+
+    def apply_settings(self, values, autostart=None, app_menu=None):
+        """Save settings. `autostart` / `app_menu`: True or False to change them, None to leave them alone."""
         ui_changed = values["ui_language"] != i18n.current()
         self.cfg.update(values)
         save_json(CONFIG_FILE, {k: self.cfg[k] for k in DEFAULTS})
-        self._set_autostart(autostart)
+        try:
+            if autostart is not None:
+                self._set_autostart(autostart)
+            if app_menu is not None and app_menu != di.is_ours(APP_ID, DATA_HOME):
+                self._set_app_menu(app_menu)
+        except OSError as exc:  # e.g. a full disk: report it, don't lose the rest of the save
+            print("Tomate: couldn't update the menu/autostart entry:", exc, file=sys.stderr)
         if self.timer.is_fresh():
             self.timer.reset()
         if ui_changed:
@@ -1026,14 +1076,65 @@ class TomateApp(Gtk.Application):
             self.tray.relabel()
 
     def _set_autostart(self, enabled):
-        if enabled:
+        if not enabled:
+            if AUTOSTART_FILE.exists():
+                AUTOSTART_FILE.unlink()
+            if IN_APPIMAGE:
+                di.remove_icon_if_unused(DATA_HOME, di.desktop_path(APP_ID, DATA_HOME))
+            return
+        args = di.launcher_args(APPIMAGE_FILE, sys.executable, BASE / "tomate.py") + ["--hidden"]
+        if IN_APPIMAGE:
+            # Marked, so it's kept pointing at the AppImage when the file moves (see _appimage_refresh).
+            di.write_entry(AUTOSTART_FILE, [
+                ("Type", "Application"), ("Name", "Tomate"), ("Exec", di.exec_line(args)),
+                ("Icon", str(di.ensure_icon(APP_ICON, DATA_HOME))), ("X-GNOME-Autostart-enabled", "true"),
+            ])
+        else:
             AUTOSTART_FILE.parent.mkdir(parents=True, exist_ok=True)
             AUTOSTART_FILE.write_text(
                 "[Desktop Entry]\nType=Application\nName=Tomate\n"
-                f"Exec={sys.executable} {BASE / 'tomate.py'} --hidden\n"
+                f"Exec={di.exec_line(args)}\n"
                 f"Icon={APP_ICON}\nX-GNOME-Autostart-enabled=true\n", encoding="utf-8")
-        elif AUTOSTART_FILE.exists():
-            AUTOSTART_FILE.unlink()
+
+    # -- AppImage: app-menu entry
+    def _set_app_menu(self, enabled):
+        if enabled:
+            if not di.integrate(APP_ID, APPIMAGE_FILE, APP_ICON, DATA_HOME, "Tomate", t("appimage.comment")):
+                self._notify(t("appimage.not_added"), t("set.app_menu_bad_path")
+                             if not di.launchable_path(APPIMAGE_FILE) else t("set.app_menu_other"))
+        elif di.remove(APP_ID, DATA_HOME):
+            autostart_uses_icon = di.is_marked(AUTOSTART_FILE)
+            di.remove_icon_if_unused(DATA_HOME, *([AUTOSTART_FILE] if autostart_uses_icon else []))
+
+    def _appimage_refresh(self):
+        """Keep Tomate's own entries pointing at this AppImage after it was moved or renamed (e.g. by an
+        update). Entries without Tomate's mark are never touched. Never stops Tomate from starting."""
+        if not di.launchable_path(APPIMAGE_FILE):
+            return  # GNOME couldn't launch this path anyway; leave the existing entries as they are
+        try:
+            if di.needs_refresh(APP_ID, APPIMAGE_FILE, DATA_HOME):
+                self._set_app_menu(True)
+            if di.exec_differs(AUTOSTART_FILE, [APPIMAGE_FILE, "--hidden"]):
+                self._set_autostart(True)
+        except OSError as exc:
+            print("Tomate: couldn't update the menu/autostart entry:", exc, file=sys.stderr)
+
+    def _appimage_offer_menu(self):
+        """First run of the AppImage: offer an app-menu entry, once."""
+        if (self.state.get("appimage_menu_asked") or di.entry_exists(APP_ID, DATA_HOME)
+                or not di.launchable_path(APPIMAGE_FILE)):
+            return False
+        self.state["appimage_menu_asked"] = True
+        self._save_state()
+        dlg = Gtk.MessageDialog(transient_for=self.window, modal=True, message_type=Gtk.MessageType.QUESTION,
+                                buttons=Gtk.ButtonsType.NONE, text=t("appimage.ask_title"))
+        dlg.format_secondary_text(t("appimage.ask_body"))
+        dlg.add_buttons(t("appimage.not_now"), Gtk.ResponseType.NO, t("appimage.add"), Gtk.ResponseType.YES)
+        dlg.set_default_response(Gtk.ResponseType.YES)
+        if dlg.run() == Gtk.ResponseType.YES:
+            self._set_app_menu(True)
+        dlg.destroy()
+        return False
 
     # -- ticking
     def _tick(self):
