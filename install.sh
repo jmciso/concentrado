@@ -6,16 +6,6 @@ set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 chmod +x "$DIR/concentrado.py"
 
-# Clean up an install of the app's former name (Tomate), but only files that install.sh itself created:
-# the launcher symlink to tomate.py and the menu entry named Tomate that runs tomate.py.
-if [ -L ~/.local/bin/tomate ] && [[ "$(readlink ~/.local/bin/tomate)" == */tomate.py ]]; then
-    rm ~/.local/bin/tomate
-fi
-old_entry=~/.local/share/applications/app.tomate.Pomodoro.desktop
-if [ -f "$old_entry" ] && grep -qx 'Name=Tomate' "$old_entry" && grep -q '^Exec=.*/tomate\.py$' "$old_entry"; then
-    rm "$old_entry"
-    find ~/.local/share/icons/hicolor -name 'app.tomate.Pomodoro.*' -delete 2>/dev/null || true
-fi
 mkdir -p ~/.local/bin ~/.local/share/applications ~/.local/share/icons/hicolor/scalable/apps
 ln -sf "$DIR/concentrado.py" ~/.local/bin/concentrado
 ICON_NAME=io.github.jmciso.Concentrado

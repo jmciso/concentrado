@@ -2,8 +2,7 @@
 
 A Pomodoro timer for GNOME (Python + GTK3) with active breaks. UI in English or Portuguese.
 
-*Concentrado* is Portuguese for both "focused" and "tomato paste" (*concentrado de tomate*). Formerly called Tomate;
-settings and progress carry over automatically.
+*Concentrado* is Portuguese for both "focused" and "tomato paste" (*concentrado de tomate*).
 
 - **Configurable periods**: focus, short break, long break, and focus sessions before a long break.
 - **Lives in the top bar**: tomato-paste tin icon (red = focus, green = break, grey = stopped) with the time left next to it.

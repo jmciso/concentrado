@@ -26,7 +26,7 @@ APPDIR="$T/dist/Concentrado.AppDir"
 APP_ID="$(sed -n 's/^APP_ID = "\(.*\)"$/\1/p' "$ROOT/concentrado.py")"
 
 # --- layout ---------------------------------------------------------------------------------------------
-for f in AppRun "$APP_ID.desktop" "$APP_ID.svg" .DirIcon usr/share/concentrado/concentrado.py usr/share/concentrado/desktop_integration.py usr/share/concentrado/migration.py \
+for f in AppRun "$APP_ID.desktop" "$APP_ID.svg" .DirIcon usr/share/concentrado/concentrado.py usr/share/concentrado/desktop_integration.py \
          usr/share/concentrado/content/en/exercises.json usr/share/concentrado/LICENSE; do
     [ -e "$APPDIR/$f" ] && ok "AppDir has $f" || fail "AppDir is missing $f"
 done
@@ -155,28 +155,6 @@ PY'
 session "$settings" >"$T/s5.log" 2>&1; rc=$?
 [ "$rc" = 0 ] && [ "$(cat "$autostart")" = "$foreign --hidden" ] \
     && ok "saving Settings leaves a foreign autostart entry alone" || fail "Settings save touched autostart (exit $rc)" "$T/app.log"
-
-# --- 6. upgrade from Tomate: settings copied (old kept), Tomate's launchers replaced by Concentrado's ------
-rm -rf "$T/config" "$T/data"
-mkdir -p "$T/config/tomate" "$T/data/tomate" "$T/config/autostart" "$T/data/applications"
-echo '{"focus_min": 7, "language": "de"}' > "$T/config/tomate/config.json"
-echo '{"stats": {"2026-11-26": 3}}' > "$T/data/tomate/state.json"
-printf '[Desktop Entry]\nType=Application\nName=Tomate\nExec=/old/Tomate.AppImage --hidden\nX-Tomate-AppImage=true\n' > "$T/config/autostart/tomate.desktop"
-printf '[Desktop Entry]\nType=Application\nName=Tomate\nExec=/old/Tomate.AppImage\nX-Tomate-AppImage=true\n' \
-    > "$T/data/applications/app.tomate.Pomodoro.desktop"
-printf '%s\n' "[Desktop Entry]" "Name=Other" "Exec=/usr/bin/true" > "$T/data/applications/other.desktop"
-session "$start_and_quit" >"$T/s6.log" 2>&1; rc=$?
-[ "$rc" = 0 ] && ok "upgrade run starts and quits cleanly" || fail "upgrade run (exit $rc)" "$T/app.log"
-grep -q '"focus_min": 7' "$T/config/concentrado/config.json" 2>/dev/null && grep -q '"2026-11-26": 3' "$T/data/concentrado/state.json" 2>/dev/null \
-    && ok "settings and progress carried over" || fail "settings/progress not carried over"
-[ -f "$T/config/tomate/config.json" ] && [ -f "$T/data/tomate/state.json" ] && ok "old Tomate folders kept" || fail "old folders were touched"
-[ ! -e "$T/config/autostart/tomate.desktop" ] && [ "$(exec_of "$autostart" 2>/dev/null)" = "$FAKE_APPIMAGE
---hidden" ] && ok "autostart moved to Concentrado" || fail "autostart not migrated: $(ls "$T/config/autostart")"
-[ ! -e "$T/data/applications/app.tomate.Pomodoro.desktop" ] && [ "$(exec_of "$entry" 2>/dev/null)" = "$FAKE_APPIMAGE" ] \
-    && ok "AppImage menu entry moved to Concentrado" || fail "menu entry not migrated: $(ls "$T/data/applications")"
-[ "$(cat "$T/data/applications/other.desktop")" = "[Desktop Entry]
-Name=Other
-Exec=/usr/bin/true" ] && ok "other apps' entries untouched" || fail "another app's entry changed"
 
 echo
 [ "$failures" = 0 ] && echo "appdir: all passed" || echo "appdir: $failures failed"

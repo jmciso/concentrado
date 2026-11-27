@@ -24,7 +24,6 @@ import i18n  # noqa: E402
 from i18n import t  # noqa: E402
 import tray  # noqa: E402
 import desktop_integration as di  # noqa: E402
-import migration  # noqa: E402
 
 
 def _optional(namespace, version):
@@ -946,10 +945,6 @@ class ConcentradoApp(Gtk.Application):
         provider.load_from_data(CSS)
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-        # first run after the rename from Tomate: copy its settings and progress (never moves them)
-        _copied, errors = migration.copy_old_dirs(GLib.get_user_config_dir(), GLib.get_user_data_dir(), "concentrado")
-        for err in errors:
-            print("Concentrado: couldn't copy settings from Tomate (will retry next start):", err, file=sys.stderr)
         self.cfg = {**DEFAULTS, **load_json(CONFIG_FILE, {})}
         i18n.set_language(self.cfg["ui_language"] or i18n.system_language())
         self.state = load_json(STATE_FILE, {})
@@ -1000,8 +995,6 @@ class ConcentradoApp(Gtk.Application):
                     return 0
         if not handled and not (first and "--hidden" in args):
             self.show_window()
-        if first:
-            self._migrate_launchers()
         if first and IN_APPIMAGE:
             self._appimage_refresh()
             if not handled and "--hidden" not in args:  # only ask when the user is actually looking
@@ -1114,28 +1107,6 @@ class ConcentradoApp(Gtk.Application):
         elif di.remove(APP_ID, DATA_HOME):
             autostart_uses_icon = di.is_marked(AUTOSTART_FILE)
             di.remove_icon_if_unused(DATA_HOME, *([AUTOSTART_FILE] if autostart_uses_icon else []))
-
-    def _migrate_launchers(self):
-        """Replace Tomate's autostart and AppImage menu entries (which launch an app that no longer exists
-        under that name) with Concentrado's. Only files recognisably written by Tomate are removed."""
-        try:
-            old = migration.old_autostart(GLib.get_user_config_dir())
-            if old:
-                if not AUTOSTART_FILE.exists():
-                    self._set_autostart(True)
-                if AUTOSTART_FILE.exists():  # replaced: the old one would start a Tomate that's gone
-                    old.unlink()
-        except OSError as exc:
-            print("Concentrado: couldn't migrate Tomate's autostart:", exc, file=sys.stderr)
-        try:
-            old_menu = migration.old_appimage_menu_entry(DATA_HOME)
-            # Only from the AppImage, and only once the new entry exists: never leave the user without one.
-            if old_menu and IN_APPIMAGE:
-                self._set_app_menu(True)
-                if di.is_ours(APP_ID, DATA_HOME):
-                    old_menu.unlink()
-        except OSError as exc:
-            print("Concentrado: couldn't migrate Tomate's menu entry:", exc, file=sys.stderr)
 
     def _appimage_refresh(self):
         """Keep Concentrado's own entries pointing at this AppImage after it was moved or renamed (e.g. by an

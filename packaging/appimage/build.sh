@@ -26,7 +26,7 @@ rm -rf "$APPDIR"
 mkdir -p "$APPDIR/usr/share/concentrado"
 
 # Files known to git (tracked, or new and not ignored): no caches, no local leftovers.
-FILES=(concentrado.py tray.py i18n.py desktop_integration.py migration.py content icons LICENSE LICENSES README.md)
+FILES=(concentrado.py tray.py i18n.py desktop_integration.py content icons LICENSE LICENSES README.md)
 untracked="$(cd "$ROOT" && git ls-files --others --exclude-standard -- "${FILES[@]}")"
 if [ -n "$untracked" ]; then
     echo "warning: including files not committed to git (fine for testing, not for a release):" >&2
